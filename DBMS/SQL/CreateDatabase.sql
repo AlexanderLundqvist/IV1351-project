@@ -9,11 +9,11 @@
 -- Pre-work on the database before loading
 --
 
+------------------------------------
+-- Creating table for instructor
+------------------------------------
 
-
---
--- Creating tables in the database
---
+DROP TABLE IF EXISTS "person";
 
 CREATE TABLE "person" (
     "SSN" serial NOT NULL,
@@ -29,14 +29,46 @@ CREATE TABLE "person" (
     PRIMARY KEY ("SSN")
 );
 
+------------------------------------
+-- Creating table for instructor
+------------------------------------
+
+DROP TABLE IF EXISTS "student";
+
 CREATE TABLE "student" (
   "student_id" INT NOT NULL,
   "SSN" INT NOT NULL,
   FOREIGN KEY (SSN) REFERENCES person(SSN)
 );
 
+------------------------------------
+-- Creating table for instructor
+------------------------------------
+
+DROP TABLE IF EXISTS "instructor";
+
 CREATE TABLE "instructor" (
   "instructor_id" INT NOT NULL,
   "SSN" INT NOT NULL,
   FOREIGN KEY (SSN) REFERENCES person(SSN)
+);
+
+------------------------------------
+-- Creating table for instructor
+------------------------------------
+
+DROP TABLE IF EXISTS "parent";
+
+CREATE TABLE "parent" (
+
+);
+
+------------------------------------
+-- Creating table for instructor
+------------------------------------
+
+DROP TABLE IF EXISTS "instructor";
+
+CREATE TABLE "" (
+
 );
