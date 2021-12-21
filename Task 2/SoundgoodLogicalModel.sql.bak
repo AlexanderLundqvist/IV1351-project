@@ -1,7 +1,7 @@
 CREATE TABLE contact_details (
  id INT NOT NULL,
- phone_number UNIQUE VARCHAR(20) NOT NULL,
- email_adress UNIQUE VARCHAR(100) NOT NULL
+ phone_number VARCHAR(20) NOT NULL,
+ email_adress VARCHAR(100) NOT NULL
 );
 
 ALTER TABLE contact_details ADD CONSTRAINT PK_contact_details PRIMARY KEY (id);
@@ -9,7 +9,7 @@ ALTER TABLE contact_details ADD CONSTRAINT PK_contact_details PRIMARY KEY (id);
 
 CREATE TABLE personaldata (
  id INT NOT NULL,
- personal_number UNIQUE VARCHAR(12) NOT NULL,
+ personal_number VARCHAR(12) NOT NULL,
  first_name VARCHAR(1000),
  last_name VARCHAR(1000),
  age VARCHAR(3),
@@ -50,7 +50,7 @@ CREATE TABLE bookings (
  instructor_id VARCHAR(100),
  time_start TIMESTAMP(10),
  time_end TIMESTAMP(10),
- id_0 INT
+ administrative_staff_id INT
 );
 
 ALTER TABLE bookings ADD CONSTRAINT PK_bookings PRIMARY KEY (id);
@@ -84,11 +84,10 @@ ALTER TABLE instructor_salary ADD CONSTRAINT PK_instructor_salary PRIMARY KEY (i
 CREATE TABLE music_lesson (
  id INT NOT NULL,
  room_number VARCHAR(10),
- instructor_id VARCHAR(100),
  time_start TIMESTAMP(10),
  time_end TIMESTAMP(10),
- id_0 INT,
- id_1 INT
+ bookings_id INT,
+ instructor_id INT
 );
 
 ALTER TABLE music_lesson ADD CONSTRAINT PK_music_lesson PRIMARY KEY (id);
@@ -115,13 +114,14 @@ ALTER TABLE pricing_scheme ADD CONSTRAINT PK_pricing_scheme PRIMARY KEY (soundgo
 
 
 CREATE TABLE rental_instrument_inventory (
- soundgood_music_school_id INT NOT NULL,
+ id INT NOT NULL,
  type_of_instrument VARCHAR(50),
  instrument_brand VARCHAR(500),
- number_in_stock INT
+ number_in_stock INT,
+ soundgood_music_school_id INT NOT NULL
 );
 
-ALTER TABLE rental_instrument_inventory ADD CONSTRAINT PK_rental_instrument_inventory PRIMARY KEY (soundgood_music_school_id);
+ALTER TABLE rental_instrument_inventory ADD CONSTRAINT PK_rental_instrument_inventory PRIMARY KEY (id);
 
 
 CREATE TABLE student (
@@ -214,7 +214,7 @@ ALTER TABLE administrative_staff ADD CONSTRAINT FK_administrative_staff_0 FOREIG
 ALTER TABLE administrative_staff ADD CONSTRAINT FK_administrative_staff_1 FOREIGN KEY (soundgood_music_school_id) REFERENCES soundgood_music_school (id);
 
 
-ALTER TABLE bookings ADD CONSTRAINT FK_bookings_0 FOREIGN KEY (id_0) REFERENCES administrative_staff (id);
+ALTER TABLE bookings ADD CONSTRAINT FK_bookings_0 FOREIGN KEY (administrative_staff_id) REFERENCES administrative_staff (id);
 
 
 ALTER TABLE instructor ADD CONSTRAINT FK_instructor_0 FOREIGN KEY (personaldata_id) REFERENCES personaldata (id);
@@ -224,8 +224,8 @@ ALTER TABLE instructor ADD CONSTRAINT FK_instructor_1 FOREIGN KEY (soundgood_mus
 ALTER TABLE instructor_salary ADD CONSTRAINT FK_instructor_salary_0 FOREIGN KEY (instructor_id) REFERENCES instructor (id);
 
 
-ALTER TABLE music_lesson ADD CONSTRAINT FK_music_lesson_0 FOREIGN KEY (id_0) REFERENCES bookings (id);
-ALTER TABLE music_lesson ADD CONSTRAINT FK_music_lesson_1 FOREIGN KEY (id_1) REFERENCES instructor (id);
+ALTER TABLE music_lesson ADD CONSTRAINT FK_music_lesson_0 FOREIGN KEY (bookings_id) REFERENCES bookings (id);
+ALTER TABLE music_lesson ADD CONSTRAINT FK_music_lesson_1 FOREIGN KEY (instructor_id) REFERENCES instructor (id);
 
 
 ALTER TABLE parent ADD CONSTRAINT FK_parent_0 FOREIGN KEY (personaldata_id) REFERENCES personaldata (id);
