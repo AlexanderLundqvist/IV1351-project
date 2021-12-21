@@ -100,6 +100,14 @@ CREATE TABLE rental_instrument_inventory (
 ALTER TABLE rental_instrument_inventory ADD CONSTRAINT PK_rental_instrument_inventory PRIMARY KEY (id);
 
 
+CREATE TABLE sibling_discount (
+ soundgood_music_school_id INT NOT NULL,
+ discount_rate FLOAT(10)
+);
+
+ALTER TABLE sibling_discount ADD CONSTRAINT PK_sibling_discount PRIMARY KEY (soundgood_music_school_id);
+
+
 CREATE TABLE student (
  id INT NOT NULL,
  instrument_quota INT,
@@ -137,11 +145,10 @@ ALTER TABLE application_form ADD CONSTRAINT PK_application_form PRIMARY KEY (id)
 CREATE TABLE bookings (
  id INT NOT NULL,
  student_id VARCHAR(100),
- instructor_id VARCHAR(100),
  time_start TIMESTAMP(10),
  time_end TIMESTAMP(10),
  administrative_staff_id INT,
- id_0 INT
+ instructor_id INT
 );
 
 ALTER TABLE bookings ADD CONSTRAINT PK_bookings PRIMARY KEY (id);
@@ -168,12 +175,6 @@ CREATE TABLE music_lesson (
 );
 
 ALTER TABLE music_lesson ADD CONSTRAINT PK_music_lesson PRIMARY KEY (id);
-
-
-CREATE TABLE sibling_discount (
- discount_rate FLOAT(10),
- id INT
-);
 
 
 CREATE TABLE ensemble (
@@ -231,6 +232,9 @@ ALTER TABLE pricing_scheme ADD CONSTRAINT FK_pricing_scheme_0 FOREIGN KEY (sound
 ALTER TABLE rental_instrument_inventory ADD CONSTRAINT FK_rental_instrument_inventory_0 FOREIGN KEY (soundgood_music_school_id) REFERENCES soundgood_music_school (id);
 
 
+ALTER TABLE sibling_discount ADD CONSTRAINT FK_sibling_discount_0 FOREIGN KEY (soundgood_music_school_id) REFERENCES soundgood_music_school (id);
+
+
 ALTER TABLE student ADD CONSTRAINT FK_student_0 FOREIGN KEY (personaldata_id) REFERENCES personaldata (id);
 ALTER TABLE student ADD CONSTRAINT FK_student_1 FOREIGN KEY (parent_id) REFERENCES parent (id);
 
@@ -243,7 +247,7 @@ ALTER TABLE application_form ADD CONSTRAINT FK_application_form_1 FOREIGN KEY (s
 
 
 ALTER TABLE bookings ADD CONSTRAINT FK_bookings_0 FOREIGN KEY (administrative_staff_id) REFERENCES administrative_staff (id);
-ALTER TABLE bookings ADD CONSTRAINT FK_bookings_1 FOREIGN KEY (id_0) REFERENCES instructor (id);
+ALTER TABLE bookings ADD CONSTRAINT FK_bookings_1 FOREIGN KEY (instructor_id) REFERENCES instructor (id);
 
 
 ALTER TABLE lease_contract ADD CONSTRAINT FK_lease_contract_0 FOREIGN KEY (student_id) REFERENCES student (id);
@@ -251,9 +255,6 @@ ALTER TABLE lease_contract ADD CONSTRAINT FK_lease_contract_0 FOREIGN KEY (stude
 
 ALTER TABLE music_lesson ADD CONSTRAINT FK_music_lesson_0 FOREIGN KEY (bookings_id) REFERENCES bookings (id);
 ALTER TABLE music_lesson ADD CONSTRAINT FK_music_lesson_1 FOREIGN KEY (instructor_id) REFERENCES instructor (id);
-
-
-ALTER TABLE sibling_discount ADD CONSTRAINT FK_sibling_discount_0 FOREIGN KEY (id) REFERENCES student_invoice (id);
 
 
 ALTER TABLE ensemble ADD CONSTRAINT FK_ensemble_0 FOREIGN KEY (music_lesson_id) REFERENCES music_lesson (id);
