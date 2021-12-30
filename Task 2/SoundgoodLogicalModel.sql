@@ -70,7 +70,7 @@ ALTER TABLE bookings ADD CONSTRAINT PK_bookings PRIMARY KEY (id);
 CREATE TABLE instructor (
  id SERIAL NOT NULL,
  employment_id VARCHAR(100) NOT NULL,
- ensemble_teacher BIT(1),
+ ensemble_teacher BOOLEAN,
  instructor_expertise VARCHAR(500),
  personaldata_id INT NOT NULL,
  soundgood_music_school_id INT NOT NULL

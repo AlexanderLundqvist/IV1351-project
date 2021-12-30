@@ -102,25 +102,25 @@ INSERT INTO sibling_discount (soundgood_music_id, discount_rate)
 -- Bookings
 INSERT INTO bookings (student_id, lesson_date, time_start, time_end, administrative_staff_id)
   VALUES
-	((SELECT id from student_id WHERE student_id = 0000),'2021-10-12','14:00', '16:00' (SELECT id from administrative_staff_id WHERE administrative_staff_id = 0000));
+	((SELECT id from student WHERE student_id = 0000), '2021-10-12', '14:00', '16:00', (SELECT id from administrative_staff WHERE administrative_staff_id = 0000));
 
 -- Music lessons
 INSERT INTO music_lesson (room_number, lesson_date, time_start, time_end, bookings_id, instructor_id)
   VALUES
-  ('0001', '2021-10-12', '15:00', '16:00',(SELECT id from bookings_id WHERE student_id = 0000), (SELECT id from instructor_id WHERE employment_id = 'KM123'));
+  ('0001', '2021-10-12', '15:00', '16:00',(SELECT id from bookings WHERE student_id = 0000), (SELECT id from instructor WHERE employment_id = 'KM123'));
 
 INSERT INTO individual_lesson (music_lesson_id, student_id, type_of_instrument)
   VALUES
-    ((SELECT id from music_lesson_id WHERE bookings_id = 0000), (SELECT id from student_id WHERE student_id = 0000), 'Guitar');
+    ((SELECT id from music_lesson WHERE bookings_id = 0000), (SELECT id from student WHERE student_id = 0000), 'Guitar');
 
 INSERT INTO group_lesson (music_lesson_id, type_of_instrument, minimum_number_of_students, maximum_number_of_students)
   VALUES
-    ((SELECT id from music_lesson_id WHERE bookings_id = 0000), (SELECT id from student_id WHERE student_id = 0000), 'Guitar', 2, 6);
+    ((SELECT id from music_lesson WHERE bookings_id = 0000), (SELECT id from student WHERE student_id = 0000), 'Guitar', 2, 6);
 
 
 INSERT INTO ensemble (music_lesson_id, genre, minimum_number_of_students, maximum_number_of_students)
   VALUES
-	((SELECT id from music_lesson_id WHERE bookings_id = 0000), 'Jazz', 8, 21);
+	((SELECT id from music_lesson WHERE bookings_id = 0000), 'Jazz', 8, 21);
 
 --------------------------------------------------------------------------------
 ----------- Tables such as invoices, contracts or applications -----------------
@@ -129,19 +129,19 @@ INSERT INTO ensemble (music_lesson_id, genre, minimum_number_of_students, maximu
 -- Instructor payments
 INSERT INTO instructor_salary (amount_of_individual_lessons, amount_of_group_lessons, amount_of_ensemble_lessons, total_income, instructor_id, month)
   VALUES
-  (6, 3, 4, 20000, (SELECT id from instructor_id WHERE employment_id = 'KM123'), 'October');
+  (6, 3, 4, 20000, (SELECT id from instructor WHERE employment_id = 'KM123'), 'October');
 
 -- Application form
 INSERT INTO application_form (type_of_instrument, level_of_skill, soundgood_music_school_id, student_id)
   VALUES
-	('Guitar', 'Intermediate', 1, (SELECT id from student_id WHERE student_id = 0000));
+	('Guitar', 'Intermediate', 1, (SELECT id from student WHERE student_id = 0000));
 
 -- Lease contract
 INSERT INTO lease_contract (type_of_instrument, contract_start_date, contract_end_date, student_id)
   VALUES
-	('Guitar', '2021-09-01', '2022-06-30', (SELECT id from student_id WHERE student_id = 0000));
+	('Guitar', '2021-09-01', '2022-06-30', (SELECT id from student WHERE student_id = 0000));
 
 -- Student payments
 INSERT INTO student_invoice (amount_of_individual_lessons, amount_of_group_lessons, amount_of_ensemble_lessons, total_price, month, student_id)
   VALUES
-	(7,3,3, 710, 'October', (SELECT id from student_id WHERE student_id = 0000));
+	(7,3,3, 710, 'October', (SELECT id from student WHERE student_id = 0000));
