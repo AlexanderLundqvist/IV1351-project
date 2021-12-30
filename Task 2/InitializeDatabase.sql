@@ -45,11 +45,11 @@ INSERT INTO instructor (employment_id, ensemble_teacher, instructor_expertise, p
 -- Admin staff
 INSERT INTO administrative_staff (id, personaldata_id, soundgood_music_school_id)
   VALUES
-    ('RL521'(SELECT id from personaldata_id WHERE personal_number = 196507052139), 1),
-    ('RS690'(SELECT id from personaldata_id WHERE personal_number = 196806174179), 1);
+    ((SELECT id from personaldata_id WHERE personal_number = 196507052139), 1),
+    ((SELECT id from personaldata_id WHERE personal_number = 196806174179), 1);
 
 -- Parents
-INSERT INTO parent (personaldata_id)
+INSERT INTO parent (id, personaldata_id)
   VALUES
 	((SELECT id from personaldata_id WHERE personal_number = 195906137713)),
     ((SELECT id from personaldata_id WHERE personal_number = 197002083146)),
@@ -71,9 +71,8 @@ INSERT INTO student (id, instrument_quota, personaldata_id, parent_id)
   ((SELECT id from personaldata_id WHERE personal_number = 200004219987)),
   ((SELECT id from personaldata_id WHERE personal_number = 200809160776)),
   ((SELECT id from personaldata_id WHERE personal_number = 200605237981)),
-  ((SELECT id from personaldata_id WHERE personal_number = 200808190783)),
+  ((SELECT id from personaldata_id WHERE personal_number = 200808190783));
   
-    (1, 0);
 
 
 --------------------------------------------------------------------------------
@@ -81,40 +80,67 @@ INSERT INTO student (id, instrument_quota, personaldata_id, parent_id)
 --------------------------------------------------------------------------------
 
 -- Instruments
-INSERT INTO parent (id, instrument_quota, personaldata_id, parent_id)
+INSERT INTO rental_instrument_inventory (id, type_of_instrument, instrument_brand, number_in_stock, soundgood_music_school_id)
   VALUES
-    (1, 0);
+	 (00, 'flute', 'Jupiter', 5, 1),
+	 (00, 'guitar', 'Les Paul', 6, 1),
+	 (00, 'bagpipe', 'Mctavish', 4, 1),
+	 (00, 'saxophone', 'Jupiter', 6, 1),
+	 (00, 'violin', 'Stradivarius', 7, 1);
 
 -- Pricing scheme
-INSERT INTO parent (id, instrument_quota, personaldata_id, parent_id)
+INSERT INTO pricing_scheme (soundgood_music_school_id, price_of_group_lesson, price_of_individual_lesson, beginner_surcharge, bintermediate_surcharge, advanced_surcharge)
   VALUES
-    (1, 0);
+    (1, 50, 80, 1.0, 1.2, 1.5);
 
--- Pricing scheme
-INSERT INTO parent (id, instrument_quota, personaldata_id, parent_id)
+-- Sibling discount
+INSERT INTO sibling_discount (soundgood_music_id, discount_rate)
   VALUES
-    (1, 0);
+    (1, 0.8);
 
--- Pricing scheme
-INSERT INTO parent (id, instrument_quota, personaldata_id, parent_id)
+-- Bookings
+INSERT INTO bookings (student_id, lesson_date, time_start, time_end, administrative_staff_id)
   VALUES
-    (1, 0);
+	((SELECT id from student_id WHERE student_id = 0000),'2021-10-12','14:00', '16:00' (SELECT id from administrative_staff_id WHERE administrative_staff_id = 0000));
 
--- Discounts
-INSERT INTO parent (id, instrument_quota, personaldata_id, parent_id)
+-- Music lessons
+INSERT INTO music_lesson (room_number, lesson_date, time_start, time_end, bookings_id, instructor_id)
   VALUES
-    (1, 0);
+  ('0001', '2021-10-12', '15:00', '16:00',(SELECT id from bookings_id WHERE student_id = 0000), (SELECT id from instructor_id WHERE employment_id = 'KM123'));
+
+INSERT INTO individual_lesson (music_lesson_id, student_id, type_of_instrument)
+  VALUES
+    ((SELECT id from music_lesson_id WHERE bookings_id = 0000), (SELECT id from student_id WHERE student_id = 0000), 'Guitar');
+
+INSERT INTO group_lesson (music_lesson_id, type_of_instrument, minimum_number_of_students, maximum_number_of_students)
+  VALUES
+    ((SELECT id from music_lesson_id WHERE bookings_id = 0000), (SELECT id from student_id WHERE student_id = 0000), 'Guitar', 2, 6);
+
+
+INSERT INTO ensemble (music_lesson_id, genre, minimum_number_of_students, maximum_number_of_students)
+  VALUES
+	((SELECT id from music_lesson_id WHERE bookings_id = 0000), 'Jazz', 8, 21);
 
 --------------------------------------------------------------------------------
 ----------- Tables such as invoices, contracts or applications -----------------
 --------------------------------------------------------------------------------
 
 -- Instructor payments
-
+INSERT INTO instructor_salary (amount_of_individual_lessons, amount_of_group_lessons, amount_of_ensemble_lessons, total_income, instructor_id, month)
+  VALUES
+  (6, 3, 4, 20000, (SELECT id from instructor_id WHERE employment_id = 'KM123'), 'October');
+  
+-- Application form
+INSERT INTO application_form (type_of_instrument, level_of_skill, soundgood_music_school_id, student_id)
+  VALUES
+	('Guitar', 'Intermediate', 1, (SELECT id from student_id WHERE student_id = 0000));
+	
+-- Lease contract
+INSERT INTO lease_contract (type_of_instrument, contract_start_date, contract_end_date, student_id)
+  VALUES
+	('Guitar', '2021-09-01', '2022-06-30', (SELECT id from student_id WHERE student_id = 0000));
+	
 -- Student payments
-
--- Lease contract_start_date
-
--- Application forms
-
--- Bookings
+INSERT INTO student_invoice (amount_of_individual_lessons, amount_of_group_lessons, amount_of_ensemble_lessons, total_price, month, student_id)
+  VALUES
+	(7,3,3, 710, 'October', (SELECT id from student_id WHERE student_id = 0000));
