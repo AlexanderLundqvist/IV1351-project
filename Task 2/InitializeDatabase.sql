@@ -22,57 +22,58 @@ INSERT INTO personaldata (personal_number, first_name, last_name, age, street, c
     (200808190783, 'Briney', 'Amar', 13, 'Dackebacken 24', 'Södertälje', 10704, 0756296922, 'bamar9@gmail.com'),
     (197304115156, 'Klas', 'Malmskog', 48, 'Valhallavägen 53', 'Stockholm', 10321, 0753516585, 'kmalm@gmail.com'), -- Teacher
     (198406182581, 'Britta', 'Larsdotter', 37, 'Kullgatan 31', 'Södertälje', 10831, 0763723697, 'brittalars@gmail.com'), -- Teacher
-	(198712270924, 'Saga', 'Dagg', 53, 'Lyckselegatan 33', 'Uppsala', 10162, 0734135514, 'sdagg@gmail.com'), -- Teacher
+    (198712270924, 'Saga', 'Dagg', 53, 'Lyckselegatan 33', 'Uppsala', 10162, 0734135514, 'sdagg@gmail.com'), -- Teacher
     (196909138375, 'Tage', 'Paulsson', 53, 'Järvaleden 216', 'Uppsala', 10584, 0736478357, 'tpaul@live.se'), -- Teacher
     (196507052139, 'Ragnar', 'Landsberg', 56, 'Odengatan 75', 'Stockholm', 10237, 0756296922, 'rlandsberg@yahoo.com'), -- Admin
-	(196806174179, 'Ronny', 'Setterberg', 53, 'Korkvägen', 'Stockholm', 10627, 0713579757, 'ronnypony@gmail.com'), -- Admin
+    (196806174179, 'Ronny', 'Setterberg', 53, 'Korkvägen', 'Stockholm', 10627, 0713579757, 'ronnypony@gmail.com'), -- Admin
     (195906137713, 'Konrad', 'Sanderson', 62, 'Tusenleden 92', 'Stockholm', 10952, 0734525773, 'ksander@yahoo.com'), -- Parent
     (197002083146, 'Loretta', 'Binge', 51, 'Odengatan 12', 'Stockholm', 10357, 0736456434, 'bingeDrink@yahoo.com'), -- Parent
-	(197307025221, 'Stina', 'Romushkin', 48, 'Upplandsgatan 42', 'Stockholm', 10990, 0729367273, 'stinis@gmail.com'), -- Parent
-	(198004051237, 'Göran', 'Bittlestone', 41, 'Roslagsvägen 52', 'Uppsala', 11487, 0732379647, 'gture@gmail.com'), -- Parent
-	(197611275585, 'Lisa', 'Heffernon', 45, 'Scheelevägen 36', 'Södertälje', 10847, 0728430627, 'heffer@yahoo.com'), -- Parent
-	(198110302166, 'Luisa', 'Casajuana', 40, 'Lottagatan 21', 'Solna', 11574, 0768145814, 'casas@gmail.com'), -- Parent
-	(198202229210, 'Rickard', 'Amar', 39, 'Dackebacken 24', 'Södertälje', 10704, 0748491779, 'amarone@live.se'); -- Parent
+    (197307025221, 'Stina', 'Romushkin', 48, 'Upplandsgatan 42', 'Stockholm', 10990, 0729367273, 'stinis@gmail.com'), -- Parent
+    (198004051237, 'Göran', 'Bittlestone', 41, 'Roslagsvägen 52', 'Uppsala', 11487, 0732379647, 'gture@gmail.com'), -- Parent
+    (197611275585, 'Lisa', 'Heffernon', 45, 'Scheelevägen 36', 'Södertälje', 10847, 0728430627, 'heffer@yahoo.com'), -- Parent
+    (198110302166, 'Luisa', 'Casajuana', 40, 'Lottagatan 21', 'Solna', 11574, 0768145814, 'casas@gmail.com'), -- Parent
+    (198202229210, 'Rickard', 'Amar', 39, 'Dackebacken 24', 'Södertälje', 10704, 0748491779, 'amarone@live.se'); -- Parent
 
 -- Instructors
 INSERT INTO instructor (employment_id, ensemble_teacher, instructor_expertise, personaldata_id, soundgood_music_school_id)
   VALUES
-    ('KM123', 0, "Guitar, piano", (SELECT id from personaldata_id WHERE personal_number = 197304115156), 1),
-    ('BL420', 0, "Saxophone, bagpipe", (SELECT id from personaldata_id WHERE personal_number = 198406182581), 1),
-	('SD531', 0, "Flute, bazoon", (SELECT id from personaldata_id WHERE personal_number = 198712270924), 1),
-    ('TP666', 1, "Piano, guitar, flute, drums, violin", (SELECT id from personaldata_id WHERE personal_number = 196909138375), 1);
+    ('KM123', FALSE, 'Guitar, piano', (SELECT id from personaldata WHERE personal_number = '197304115156'), 1),
+    ('BL420', FALSE, 'Saxophone, bagpipe', (SELECT id from personaldata WHERE personal_number = '198406182581'), 1),
+	  ('SD531', FALSE, 'Flute, bazoon', (SELECT id from personaldata WHERE personal_number = '198712270924'), 1),
+    ('TP666', TRUE, 'Piano, guitar, flute, drums, violin', (SELECT id from personaldata WHERE personal_number = '196909138375'), 1);
 
 -- Admin staff
-INSERT INTO administrative_staff (id, personaldata_id, soundgood_music_school_id)
+INSERT INTO administrative_staff (personaldata_id, soundgood_music_school_id)
   VALUES
-    ((SELECT id from personaldata_id WHERE personal_number = 196507052139), 1),
-    ((SELECT id from personaldata_id WHERE personal_number = 196806174179), 1);
+    ((SELECT id from personaldata WHERE personal_number = '196507052139'), 1),
+    ((SELECT id from personaldata WHERE personal_number = '196806174179'), 1);
 
 -- Parents
-INSERT INTO parent (id, personaldata_id)
+INSERT INTO parent (personaldata_id)
   VALUES
-	((SELECT id from personaldata_id WHERE personal_number = 195906137713)),
-    ((SELECT id from personaldata_id WHERE personal_number = 197002083146)),
-    ((SELECT id from personaldata_id WHERE personal_number = 197307025221)),
-    ((SELECT id from personaldata_id WHERE personal_number = 198004051237)),
-    ((SELECT id from personaldata_id WHERE personal_number = 197611275585)),
-    ((SELECT id from personaldata_id WHERE personal_number = 198110302166)),
-    ((SELECT id from personaldata_id WHERE personal_number = 198202229210));
+	  ((SELECT id from personaldata WHERE personal_number = '195906137713')),
+    ((SELECT id from personaldata WHERE personal_number = '197002083146')),
+    ((SELECT id from personaldata WHERE personal_number = '197307025221')),
+    ((SELECT id from personaldata WHERE personal_number = '198004051237')),
+    ((SELECT id from personaldata WHERE personal_number = '197611275585')),
+    ((SELECT id from personaldata WHERE personal_number = '198110302166')),
+    ((SELECT id from personaldata WHERE personal_number = '198202229210'));
 
 -- Students
-INSERT INTO student (id, instrument_quota, personaldata_id, parent_id)
+-- Absolutely terrible WIP but it works
+INSERT INTO student (instrument_quota, personaldata_id, parent_id)
   VALUES
-  ((SELECT id from personaldata_id WHERE personal_number = 201312095888)),
-  ((SELECT id from personaldata_id WHERE personal_number = 200911274021)),
-  ((SELECT id from personaldata_id WHERE personal_number = 201103140039)),
-  ((SELECT id from personaldata_id WHERE personal_number = 200902032436)),
-  ((SELECT id from personaldata_id WHERE personal_number = 200210280297)),
-  ((SELECT id from personaldata_id WHERE personal_number = 200711138821)),
-  ((SELECT id from personaldata_id WHERE personal_number = 200004219987)),
-  ((SELECT id from personaldata_id WHERE personal_number = 200809160776)),
-  ((SELECT id from personaldata_id WHERE personal_number = 200605237981)),
-  ((SELECT id from personaldata_id WHERE personal_number = 200808190783));
-  
+    (0, (SELECT id from personaldata WHERE personal_number = '201312095888'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197611275585'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200911274021'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198004051237'))),
+    (1, (SELECT id from personaldata WHERE personal_number = '201103140039'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197307025221'))),
+    (2, (SELECT id from personaldata WHERE personal_number = '200902032436'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197307025221'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200210280297'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198110302166'))),
+    (1, (SELECT id from personaldata WHERE personal_number = '200711138821'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197002083146'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200004219987'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197002083146'))),
+    (2, (SELECT id from personaldata WHERE personal_number = '200809160776'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '195906137713'))),
+    (1, (SELECT id from personaldata WHERE personal_number = '200605237981'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '195906137713'))),
+    (1, (SELECT id from personaldata WHERE personal_number = '200808190783'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198202229210')));
+
 
 
 --------------------------------------------------------------------------------
@@ -89,7 +90,7 @@ INSERT INTO rental_instrument_inventory (id, type_of_instrument, instrument_bran
 	 (00, 'violin', 'Stradivarius', 7, 1);
 
 -- Pricing scheme
-INSERT INTO pricing_scheme (soundgood_music_school_id, price_of_group_lesson, price_of_individual_lesson, beginner_surcharge, bintermediate_surcharge, advanced_surcharge)
+INSERT INTO pricing_scheme (soundgood_music_school_id, price_of_group_lesson, price_of_individual_lesson, beginner_surcharge, intermediate_surcharge, advanced_surcharge)
   VALUES
     (1, 50, 80, 1.0, 1.2, 1.5);
 
@@ -129,17 +130,17 @@ INSERT INTO ensemble (music_lesson_id, genre, minimum_number_of_students, maximu
 INSERT INTO instructor_salary (amount_of_individual_lessons, amount_of_group_lessons, amount_of_ensemble_lessons, total_income, instructor_id, month)
   VALUES
   (6, 3, 4, 20000, (SELECT id from instructor_id WHERE employment_id = 'KM123'), 'October');
-  
+
 -- Application form
 INSERT INTO application_form (type_of_instrument, level_of_skill, soundgood_music_school_id, student_id)
   VALUES
 	('Guitar', 'Intermediate', 1, (SELECT id from student_id WHERE student_id = 0000));
-	
+
 -- Lease contract
 INSERT INTO lease_contract (type_of_instrument, contract_start_date, contract_end_date, student_id)
   VALUES
 	('Guitar', '2021-09-01', '2022-06-30', (SELECT id from student_id WHERE student_id = 0000));
-	
+
 -- Student payments
 INSERT INTO student_invoice (amount_of_individual_lessons, amount_of_group_lessons, amount_of_ensemble_lessons, total_price, month, student_id)
   VALUES
