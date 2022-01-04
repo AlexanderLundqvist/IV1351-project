@@ -1,3 +1,4 @@
+
 DROP TABLE IF EXISTS "personaldata" CASCADE;
 DROP TABLE IF EXISTS "soundgood_music_school" CASCADE;
 DROP TABLE IF EXISTS "administrative_staff" CASCADE;
@@ -17,6 +18,7 @@ DROP TABLE IF EXISTS "ensemble" CASCADE;
 DROP TABLE IF EXISTS "group_lesson" CASCADE;
 DROP TABLE IF EXISTS "individual_lesson" CASCADE;
 
+
 CREATE TABLE personaldata (
  id SERIAL NOT NULL,
  personal_number VARCHAR(12) NOT NULL,
@@ -34,7 +36,7 @@ ALTER TABLE personaldata ADD CONSTRAINT PK_personaldata PRIMARY KEY (id);
 
 
 CREATE TABLE soundgood_music_school (
- id VARCHAR(10) NOT NULL,
+ id SERIAL NOT NULL,
  available_spots INT,
  street VARCHAR(1000),
  city VARCHAR(1000),
@@ -47,7 +49,7 @@ ALTER TABLE soundgood_music_school ADD CONSTRAINT PK_soundgood_music_school PRIM
 CREATE TABLE administrative_staff (
  id SERIAL NOT NULL,
  personaldata_id INT NOT NULL,
- soundgood_music_school_id VARCHAR(10) NOT NULL
+ soundgood_music_school_id INT NOT NULL
 );
 
 ALTER TABLE administrative_staff ADD CONSTRAINT PK_administrative_staff PRIMARY KEY (id);
@@ -56,8 +58,9 @@ ALTER TABLE administrative_staff ADD CONSTRAINT PK_administrative_staff PRIMARY 
 CREATE TABLE bookings (
  id SERIAL NOT NULL,
  student_id VARCHAR(100),
- time_start TIMESTAMP(10),
- time_end TIMESTAMP(10),
+ lesson_date VARCHAR(10),
+ time_start VARCHAR(8),
+ time_end VARCHAR(8),
  administrative_staff_id INT
 );
 
@@ -70,7 +73,7 @@ CREATE TABLE instructor (
  ensemble_teacher BOOLEAN,
  instructor_expertise VARCHAR(500),
  personaldata_id INT NOT NULL,
- soundgood_music_school_id VARCHAR(10) NOT NULL
+ soundgood_music_school_id INT NOT NULL
 );
 
 ALTER TABLE instructor ADD CONSTRAINT PK_instructor PRIMARY KEY (id);
@@ -78,11 +81,11 @@ ALTER TABLE instructor ADD CONSTRAINT PK_instructor PRIMARY KEY (id);
 
 CREATE TABLE instructor_salary (
  id SERIAL NOT NULL,
- instructor_id INT NOT NULL,
  amount_of_individual_lessons INT,
  amount_of_group_lessons INT,
  amount_of_ensemble INT,
  total_income FLOAT(10),
+ instructor_id INT NOT NULL,
  month VARCHAR(20)
 );
 
@@ -93,8 +96,10 @@ CREATE TABLE music_lesson (
  id SERIAL NOT NULL,
  lesson_type VARCHAR(20),
  room_number VARCHAR(10),
- time_start TIMESTAMP(10),
- time_end TIMESTAMP(10),
+ lesson_date VARCHAR(10),
+ time_start VARCHAR(8),
+ time_end VARCHAR(8),
+ bookings_id INT,
  instructor_id INT
 );
 
@@ -110,7 +115,7 @@ ALTER TABLE parent ADD CONSTRAINT PK_parent PRIMARY KEY (id);
 
 
 CREATE TABLE pricing_scheme (
- soundgood_music_school_id VARCHAR(10) NOT NULL,
+ soundgood_music_school_id INT NOT NULL,
  price_of_group_lesson FLOAT(10),
  price_of_individual_lesson FLOAT(10),
  beginner_surcharge FLOAT(10),
@@ -126,14 +131,14 @@ CREATE TABLE rental_instrument_inventory (
  type_of_instrument VARCHAR(50),
  instrument_brand VARCHAR(500),
  number_in_stock INT,
- soundgood_music_school_id VARCHAR(10) NOT NULL
+ soundgood_music_school_id INT NOT NULL
 );
 
 ALTER TABLE rental_instrument_inventory ADD CONSTRAINT PK_rental_instrument_inventory PRIMARY KEY (id);
 
 
 CREATE TABLE sibling_discount (
- soundgood_music_school_id VARCHAR(10) NOT NULL,
+ soundgood_music_school_id INT NOT NULL,
  discount_rate FLOAT(10)
 );
 
@@ -152,13 +157,12 @@ ALTER TABLE student ADD CONSTRAINT PK_student PRIMARY KEY (id);
 
 CREATE TABLE student_invoice (
  id SERIAL NOT NULL,
- student_id INT NOT NULL,
  amount_of_individual_lessons INT,
  amount_of_group_lessons INT,
  amount_of_ensemble INT,
- instrument_fee INT,
  total_price FLOAT(10),
- month VARCHAR(20)
+ month VARCHAR(20),
+ student_id INT NOT NULL
 );
 
 ALTER TABLE student_invoice ADD CONSTRAINT PK_student_invoice PRIMARY KEY (id);
@@ -168,7 +172,7 @@ CREATE TABLE application_form (
  id SERIAL NOT NULL,
  type_of_instrument VARCHAR(50),
  level_of_skill VARCHAR(20),
- soundgood_music_school_id VARCHAR(10) NOT NULL,
+ soundgood_music_school_id INT NOT NULL,
  student_id INT NOT NULL
 );
 
@@ -207,8 +211,8 @@ ALTER TABLE individual_lesson ADD CONSTRAINT PK_individual_lesson PRIMARY KEY (m
 CREATE TABLE lease_contract (
  id SERIAL NOT NULL,
  type_of_instrument VARCHAR(50),
- contract_start_date TIMESTAMP(10),
- contract_end_date TIMESTAMP(10),
+ contract_start_date VARCHAR(10),
+ contract_end_date VARCHAR(10),
  student_id INT NOT NULL
 );
 
@@ -229,7 +233,8 @@ ALTER TABLE instructor ADD CONSTRAINT FK_instructor_1 FOREIGN KEY (soundgood_mus
 ALTER TABLE instructor_salary ADD CONSTRAINT FK_instructor_salary_0 FOREIGN KEY (instructor_id) REFERENCES instructor (id);
 
 
-ALTER TABLE music_lesson ADD CONSTRAINT FK_music_lesson_0 FOREIGN KEY (instructor_id) REFERENCES instructor (id);
+ALTER TABLE music_lesson ADD CONSTRAINT FK_music_lesson_0 FOREIGN KEY (bookings_id) REFERENCES bookings (id);
+ALTER TABLE music_lesson ADD CONSTRAINT FK_music_lesson_1 FOREIGN KEY (instructor_id) REFERENCES instructor (id);
 
 
 ALTER TABLE parent ADD CONSTRAINT FK_parent_0 FOREIGN KEY (personaldata_id) REFERENCES personaldata (id);

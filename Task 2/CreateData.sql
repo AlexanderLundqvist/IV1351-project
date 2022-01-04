@@ -83,11 +83,11 @@ INSERT INTO student (instrument_quota, personaldata_id, parent_id)
 -- Instruments
 INSERT INTO rental_instrument_inventory (type_of_instrument, instrument_brand, number_in_stock, soundgood_music_school_id)
   VALUES
-  	('flute', 'Jupiter', 5, 'SG1337'),
-  	('guitar', 'Les Paul', 6, 'SG1337'),
-  	('bagpipe', 'Mctavish', 4, 'SG1337'),
-  	('saxophone', 'Jupiter', 6, 'SG1337'),
-  	('violin', 'Stradivarius', 7, 'SG1337');
+  	('Flute', 'Jupiter', 5, 'SG1337'),
+  	('Guitar', 'Les Paul', 6, 'SG1337'),
+  	('Bagpipe', 'Mctavish', 4, 'SG1337'),
+  	('Saxophone', 'Jupiter', 6, 'SG1337'),
+  	('Violin', 'Stradivarius', 7, 'SG1337');
 
 -- Pricing scheme
 INSERT INTO pricing_scheme (soundgood_music_school_id, price_of_group_lesson, price_of_individual_lesson, beginner_surcharge, intermediate_surcharge, advanced_surcharge)
@@ -100,33 +100,44 @@ INSERT INTO sibling_discount (soundgood_music_school_id, discount_rate)
     ('SG1337', 0.8);
 
 -- Bookings
-INSERT INTO bookings (student_id, time_start, time_end, administrative_staff_id)
+INSERT INTO bookings (student_id, lesson_type, time_start, time_end, administrative_staff_id)
   VALUES
-    (1, '2021-10-12 14:00', '2021-10-12 16:00', 1),
-    (3, '2021-11-09 15:00', '2021-11-09 16:30', 2),
-    (8, '2021-11-09 15:00', '2021-11-12 11:00', 2),
-    (3, '2021-10-30 10:00', '2021-10-30 12:30', 1),
-	  (3, '2021-12-12 13:30', '2021-12-12 14:30', 2),
-    (8, '2022-01-02 15:30', '2022-01-02 17:00', 1);
+    (1, 'Individual', '2021-10-12 14:00', '2021-10-12 16:00', 1),
+    (3, 'Individual', '2021-11-09 15:00', '2021-11-09 16:30', 2),
+    (8, 'Individual', '2021-11-09 15:00', '2021-11-12 11:00', 2),
+    (3, 'Individual', '2021-10-30 10:00', '2021-10-30 12:30', 1),
+	  (3, 'Individual', '2021-12-12 13:30', '2021-12-12 14:30', 2),
+    (8, 'Individual', '2022-01-02 15:30', '2022-01-02 17:00', 1),
+
+    (2, 'Group', '2022-01-02 15:30', '2022-01-02 17:00', 1),
+    (3, 'Group', '2022-01-02 15:30', '2022-01-02 17:00', 1),
+    (4, 'Group', '2022-01-02 15:30', '2022-01-02 17:00', 1),
+    (7, 'Group', '2022-01-02 15:30', '2022-01-02 17:00', 1),
+    (10, 'Group', '2022-01-02 15:30', '2022-01-02 17:00', 1),
+
+    (3, 'Ensemble', '2022-01-02 15:30', '2022-01-02 17:00', 1),
+    (3, 'Ensemble', '2022-01-02 15:30', '2022-01-02 17:00', 1),
+    (2, 'Ensemble', '2022-01-02 15:30', '2022-01-02 17:00', 1),
+    (7, 'Ensemble', '2022-01-02 15:30', '2022-01-02 17:00', 1);
 
 -- Music lessons
-INSERT INTO music_lesson (room_number, time_start, time_end, instructor_id)
+INSERT INTO music_lesson (lesson_type ,room_number, time_start, time_end, instructor_id)
   VALUES
-    ('A12', '2021-10-12 14:00', '2021-10-12 16:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Individual
-    ('A02', '2021-11-09 15:00', '2021-11-09 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
-    ('A11', '2021-11-09 15:00', '2021-11-12 11:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
-    ('A09', '2021-10-30 10:00', '2021-10-30 12:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
-    ('A01', '2021-12-12 13:30', '2021-12-12 14:30', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Individual
-    ('A03', '2022-01-02 15:30', '2022-01-02 17:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
+    ('Individual', 'A12', '2021-10-12 14:00', '2021-10-12 16:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Individual
+    ('Individual', 'A02', '2021-11-09 15:00', '2021-11-09 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
+    ('Individual', 'A11', '2021-11-09 15:00', '2021-11-12 11:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
+    ('Individual', 'A09', '2021-10-30 10:00', '2021-10-30 12:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
+    ('Individual', 'A01', '2021-12-12 13:30', '2021-12-12 14:30', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Individual
+    ('Individual', 'A03', '2022-01-02 15:30', '2022-01-02 17:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
 
-    ('B10', '2021-10-22 15:30', '2022-10-22 17:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
-    ('B11', '2021-11-20 14:30', '2021-10-20 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Group
-    ('B05', '2021-12-14 12:00', '2022-12-14 14:30', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
-    ('B01', '2022-01-03 13:30', '2022-01-03 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Group
+    ('Group', 'B10', '2021-10-22 15:30', '2022-10-22 17:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
+    ('Group', 'B11', '2021-11-20 14:30', '2021-10-20 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Group
+    ('Group', 'B05', '2021-12-14 12:00', '2022-12-14 14:30', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
+    ('Group', 'B01', '2022-01-03 13:30', '2022-01-03 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Group
 
-    ('C02', '2021-11-22 12:30', '2021-11-22 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('C08', '2021-12-20 14:30', '2021-12-20 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('C15', '2022-01-02 10:30', '2022-01-02 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')); -- Ensemble
+    ('Ensemble', 'C02', '2021-11-22 12:30', '2021-11-22 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C08', '2021-12-20 14:30', '2021-12-20 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', '2022-01-02 10:30', '2022-01-02 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')); -- Ensemble
 
 INSERT INTO individual_lesson (music_lesson_id, student_id, type_of_instrument)
   VALUES
@@ -139,38 +150,68 @@ INSERT INTO individual_lesson (music_lesson_id, student_id, type_of_instrument)
 
 INSERT INTO group_lesson (music_lesson_id, type_of_instrument, minimum_number_of_students, maximum_number_of_students)
   VALUES
-    (7, 'Guitar', 2, 6),
-    (8, 'Flute', 2, 6),
-    (9, 'Guitar', 2, 6),
-    (10, 'Violin', 2, 6);
+    (7, 'Guitar', 2, 4),
+    (8, 'Flute', 2, 4),
+    (9, 'Guitar', 2, 4),
+    (10, 'Violin', 2, 4);
 
 
 INSERT INTO ensemble (music_lesson_id, genre, minimum_number_of_students, maximum_number_of_students)
   VALUES
-    (11, 'Jazz', 8, 21),
-    (12, 'Rock', 8, 21),
-	  (13, 'Classical', 8, 21);
+    (11, 'Jazz', 2, 4),
+    (12, 'Rock', 2, 4),
+	  (13, 'Classical', 2, 4);
 
 --------------------------------------------------------------------------------
 ----------- Tables such as invoices, contracts or applications -----------------
 --------------------------------------------------------------------------------
 
 -- Instructor payments
+-- Add the amount for different skill levels?
 INSERT INTO instructor_salary (instructor_id, amount_of_individual_lessons, amount_of_group_lessons, amount_of_ensemble, total_income, month)
   VALUES
-    (1, 6, 3, 4, 20000, 'October'); -- KM111
+    (1, 6, 3, 0, 20000, 'October'), -- KM111
+    (2, 3, 2, 0, 19000, 'October'), -- BL222
+    (3, 4, 4, 0, 21000, 'October'), -- SD333
+    (4, 2, 3, 4, 20000, 'October'), -- TP444
+    (1, 8, 2, 0, 21000, 'November'),
+    (2, 3, 6, 0, 22000, 'November'),
+    (3, 6, 4, 0, 19000, 'November'),
+    (2, 5, 4, 4, 23000, 'November');
 
 -- Application form
-INSERT INTO application_form (type_of_instrument, level_of_skill, soundgood_music_school_id, student_id)
+INSERT INTO application_form (administrative_staff_id, type_of_instrument, level_of_skill, soundgood_music_school_id, student_id)
   VALUES
-	  ('Guitar', 'Intermediate', 'SG1337', 1);
+	  (1, 'Guitar', 'Beginner', 'SG1337', 1),
+    (1, 'Guitar', 'Intermediate', 'SG1337', 2),
+    (1, 'Flute', 'Intermediate', 'SG1337', 3),
+    (2, 'Guitar', 'Advanced', 'SG1337', 4),
+    (2, 'Violin', 'Beginner', 'SG1337', 5),
+    (1, 'Bagpipe', 'Beginner', 'SG1337', 6),
+    (2, 'Violin', 'Advanced', 'SG1337', 7),
+    (1, 'Saxophone', 'Advanced', 'SG1337', 8),
+    (1, 'Flute', 'Intermediate', 'SG1337', 9),
+    (2, 'Saxophone', 'Intermediate', 'SG1337', 10),
+    (2, 'Piano', 'Beginner', 'SG1337', 11); -- Not accepted as student yet
 
 -- Lease contract
-INSERT INTO lease_contract (type_of_instrument, contract_start_date, contract_end_date, student_id)
+INSERT INTO lease_contract (instrument_id, type_of_instrument, contract_start_date, contract_end_date, student_id)
   VALUES
-	  ('Guitar', '2021/09/01 13:00:00', '2022/06/30 13:00:00', 1);
+    (2, 'Guitar', '2021/09/01 13:00:00', '2022/06/01 13:00:00', 1),
+    (1, 'Flute', '2021/10/10 13:00:00', '2022/10/10 13:00:00', 3),
+    (5, 'Violin', '2021/09/22 13:00:00', '2022/05/22 13:00:00', 5),
+	  (4, 'Saxophone', '2021/08/30 13:00:00', '2022/05/30 13:00:00', 8);
 
 -- Student payments
 INSERT INTO student_invoice (student_id, amount_of_individual_lessons, amount_of_group_lessons, amount_of_ensemble, instrument_fee, total_price, month)
   VALUES
-	  (1, 7, 3, 3, 10, 720, 'October');
+    (1, 3, 4, 2, 10, 720, 'December'),
+    (2, 2, 4, 3, 10, 770, 'December'),
+    (3, 0, 3, 2, 10, 660, 'December'),
+    (4, 6, 3, 0, 10, 690, 'December'),
+    (5, 0, 2, 5, 10, 740, 'December'),
+    (6, 3, 0, 1, 10, 670, 'December'),
+    (7, 5, 1, 6, 10, 810, 'December'),
+    (8, 8, 0, 0, 10, 800, 'December'),
+    (9, 4, 3, 0, 10, 720, 'December'),
+    (10, 3, 1, 2, 10, 730, 'December');
