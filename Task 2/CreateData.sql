@@ -143,6 +143,14 @@ INSERT INTO music_lesson (lesson_type ,room_number, time_start, time_end, instru
     ('Ensemble', 'C02', '2021-11-22 12:30', '2021-11-22 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
     ('Ensemble', 'C08', '2021-12-20 14:30', '2021-12-20 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
     ('Ensemble', 'C15', '2022-01-02 10:30', '2022-01-02 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')); -- Ensemble
+	('Ensemble', 'C02', '2022-01-03 12:30', '2021-01-03 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C08', '2022-01-03 14:30', '2021-01-03 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', '2022-01-04 10:30', '2022-01-04 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')); -- Ensemble
+	('Ensemble', 'C02', '2022-01-04 12:30', '2022-01-04 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C08', '2022-01-04 14:30', '2022-01-04 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', '2022-01-05 10:30', '2022-01-05 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')); -- Ensemble
+
+
 
 INSERT INTO individual_lesson (music_lesson_id, student_id, type_of_instrument)
   VALUES
@@ -163,9 +171,17 @@ INSERT INTO group_lesson (music_lesson_id, type_of_instrument, minimum_number_of
 
 INSERT INTO ensemble (music_lesson_id, genre, minimum_number_of_students, maximum_number_of_students)
   VALUES
-    (11, 'Jazz', 2, 4),
-    (12, 'Rock', 2, 4),
-	  (13, 'Classical', 2, 4);
+    (11, 'Jazz', 8, 16),
+    (12, 'Rock', 8, 16),
+	(13, 'Classical', 8, 16)
+	(14, 'Jazz', 8, 16),
+    (15, 'Rock', 8, 16),
+	(16, 'Classical', 8, 16)
+	(17, 'Jazz', 8, 16),
+    (18, 'Rock', 8, 16),
+	(19, 'Classical', 8, 16)
+	
+	;
 
 --------------------------------------------------------------------------------
 ----------- Tables such as invoices, contracts or applications -----------------
