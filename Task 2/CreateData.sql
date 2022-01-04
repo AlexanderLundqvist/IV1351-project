@@ -20,19 +20,24 @@ INSERT INTO personaldata (personal_number, first_name, last_name, age, street, c
     (200809160776, 'Filberto', 'Sanderson', 13, 'Lärkgången 30', 'Solna', 10596, 0720643974, 'fomand7@live.se'),
     (200605237981, 'Doralynne', 'Sanderson', 15, 'Tusenleden 92', 'Stockholm', 10952, 0731276549, 'dsanderson8@hotmail.com'),
     (200808190783, 'Briney', 'Amar', 13, 'Dackebacken 24', 'Södertälje', 10704, 0756296922, 'bamar9@gmail.com'),
+
     (197304115156, 'Klas', 'Malmskog', 48, 'Valhallavägen 53', 'Stockholm', 10321, 0753516585, 'kmalm@gmail.com'), -- Teacher
     (198406182581, 'Britta', 'Larsdotter', 37, 'Kullgatan 31', 'Södertälje', 10831, 0763723697, 'brittalars@gmail.com'), -- Teacher
     (198712270924, 'Saga', 'Dagg', 53, 'Lyckselegatan 33', 'Uppsala', 10162, 0734135514, 'sdagg@gmail.com'), -- Teacher
     (196909138375, 'Tage', 'Paulsson', 53, 'Järvaleden 216', 'Uppsala', 10584, 0736478357, 'tpaul@live.se'), -- Teacher
+
     (196507052139, 'Ragnar', 'Landsberg', 56, 'Odengatan 75', 'Stockholm', 10237, 0756296922, 'rlandsberg@yahoo.com'), -- Admin
     (196806174179, 'Ronny', 'Setterberg', 53, 'Korkvägen', 'Stockholm', 10627, 0713579757, 'ronnypony@gmail.com'), -- Admin
+
     (195906137713, 'Konrad', 'Sanderson', 62, 'Tusenleden 92', 'Stockholm', 10952, 0734525773, 'ksander@yahoo.com'), -- Parent
     (197002083146, 'Loretta', 'Binge', 51, 'Odengatan 12', 'Stockholm', 10357, 0736456434, 'bingeDrink@yahoo.com'), -- Parent
     (197307025221, 'Stina', 'Romushkin', 48, 'Upplandsgatan 42', 'Stockholm', 10990, 0729367273, 'stinis@gmail.com'), -- Parent
     (198004051237, 'Göran', 'Bittlestone', 41, 'Roslagsvägen 52', 'Uppsala', 11487, 0732379647, 'gture@gmail.com'), -- Parent
     (197611275585, 'Lisa', 'Heffernon', 45, 'Scheelevägen 36', 'Södertälje', 10847, 0728430627, 'heffer@yahoo.com'), -- Parent
     (198110302166, 'Luisa', 'Casajuana', 40, 'Lottagatan 21', 'Solna', 11574, 0768145814, 'casas@gmail.com'), -- Parent
-    (198202229210, 'Rickard', 'Amar', 39, 'Dackebacken 24', 'Södertälje', 10704, 0748491779, 'amarone@live.se'); -- Parent
+    (198202229210, 'Rickard', 'Amar', 39, 'Dackebacken 24', 'Södertälje', 10704, 0748491779, 'amarone@live.se'), -- Parent
+
+    (201005301770, 'Hans', 'Flammenwerfer', 11, 'Bättringsvägen 24', 'Stockholm', 10990, 00358403345679, '9gag@meme.se'); -- New student that hasn't been accepted yet
 
 -- Instructors
 INSERT INTO instructor (employment_id, ensemble_teacher, instructor_expertise, personaldata_id, soundgood_music_school_id)
@@ -131,7 +136,7 @@ INSERT INTO music_lesson (lesson_type ,room_number, time_start, time_end, instru
     ('Individual', 'A03', '2022-01-02 15:30', '2022-01-02 17:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
 
     ('Group', 'B10', '2021-10-22 15:30', '2022-10-22 17:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
-    ('Group', 'B11', '2021-11-20 14:30', '2021-10-20 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Group
+    ('Group', 'B11', '2021-11-20 14:30', '2021-11-20 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Group
     ('Group', 'B05', '2021-12-14 12:00', '2022-12-14 14:30', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
     ('Group', 'B01', '2022-01-03 13:30', '2022-01-03 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Group
 
@@ -180,7 +185,7 @@ INSERT INTO instructor_salary (instructor_id, amount_of_individual_lessons, amou
     (2, 5, 4, 4, 23000, 'November');
 
 -- Application form
-INSERT INTO application_form (administrative_staff_id, type_of_instrument, level_of_skill, soundgood_music_school_id, student_id)
+INSERT INTO application_form (administrative_staff_id, type_of_instrument, level_of_skill, soundgood_music_school_id, personaldata_id)
   VALUES
 	  (1, 'Guitar', 'Beginner', 'SG1337', 1),
     (1, 'Guitar', 'Intermediate', 'SG1337', 2),
@@ -192,7 +197,7 @@ INSERT INTO application_form (administrative_staff_id, type_of_instrument, level
     (1, 'Saxophone', 'Advanced', 'SG1337', 8),
     (1, 'Flute', 'Intermediate', 'SG1337', 9),
     (2, 'Saxophone', 'Intermediate', 'SG1337', 10),
-    (2, 'Piano', 'Beginner', 'SG1337', 11); -- Not accepted as student yet
+    (2, 'Piano', 'Beginner', 'SG1337', 24); -- Not accepted as student yet
 
 -- Lease contract
 INSERT INTO lease_contract (instrument_id, type_of_instrument, contract_start_date, contract_end_date, student_id)
