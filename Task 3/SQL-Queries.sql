@@ -1,4 +1,4 @@
---All types
+-- All types
 SELECT EXTRACT(MONTH FROM music_lesson.time_start) AS Month, Count(*) AS nr_of_lessons
 FROM music_lesson
 WHERE EXTRACT(YEAR FROM music_lesson.time_start) = '2021'
@@ -6,31 +6,33 @@ GROUP BY EXTRACT(MONTH FROM music_lesson.time_start);
 
 
 
---Specific types of lesson
+-- Specific types of lesson
 
 CREATE VIEW specific_lesson AS
 SELECT EXTRACT(MONTH FROM lesson.time_start) AS Month,
 
-COUNT(*) HAVING lesson_type = 'Individual' AS individual_lessons,
-COUNT(*) HAVING lesson_type = 'Group' AS group_lessons,
-COUNT(*) HAVING lesson_type = 'Ensemble' AS ensemble_lessons
+COUNT(CASE WHEN lesson_type = 'Individual' then 1 end) AS individual_lessons,
+COUNT(CASE WHEN lesson_type = 'Group' then 1 end) AS group_lessons,
+COUNT(CASE WHEN lesson_type = 'Ensemble' then 1 end) AS ensemble_lessons
 
 FROM music_lesson as lesson
 WHERE EXTRACT(YEAR FROM lesson.time_start) = '2021'
 GROUP BY EXTRACT(MONTH FROM lesson.time_start)
 ORDER BY EXTRACT(MONTH FROM lesson.time_start);
 
-WHERE lesson_type = 'Individual'
-WHERE lesson_type = 'Group'
-WHERE lesson_type = 'Ensemble'
+-- Make another with id's!!!!
 
---All types average 12 months
+
+
+-- All types average 12 months
 
 SELECT Count(*)::float / 12 AS average_nr_of_lessons
 FROM music_lesson
 WHERE EXTRACT(YEAR FROM music_lesson.time_start) = '2021';
 
---Instructor workload
+
+
+-- Instructor workload
 
 SELECT * FROM(
 SELECT instructor.employment_id, personaldata.first_name, personaldata.last_name, Count(*) as lessons_given
@@ -41,3 +43,9 @@ WHERE EXTRACT(MONTH FROM music_lesson.time_start) = EXTRACT(MONTH FROM CURRENT_D
 GROUP BY employment_id, personaldata.first_name, personaldata.last_name
 ORDER BY Count(*) DESC)
  AS instructor WHERE lessons_given >1;
+
+
+
+-- Available ensemble spots
+
+SELECT * FROM

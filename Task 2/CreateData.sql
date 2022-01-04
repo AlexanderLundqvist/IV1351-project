@@ -126,29 +126,29 @@ INSERT INTO bookings (student_id, lesson_type, time_start, time_end, administrat
     (7, 'Ensemble', '2022-01-02 15:30', '2022-01-02 17:00', 1);
 
 -- Music lessons
-INSERT INTO music_lesson (lesson_type ,room_number, time_start, time_end, instructor_id)
+INSERT INTO music_lesson (lesson_type ,room_number, amount_of_participants, time_start, time_end, instructor_id)
   VALUES
-    ('Individual', 'A12', '2021-10-12 14:00', '2021-10-12 16:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Individual
-    ('Individual', 'A02', '2021-11-09 15:00', '2021-11-09 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
-    ('Individual', 'A11', '2021-11-09 15:00', '2021-11-12 11:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
-    ('Individual', 'A09', '2021-10-30 10:00', '2021-10-30 12:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
-    ('Individual', 'A01', '2021-12-12 13:30', '2021-12-12 14:30', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Individual
-    ('Individual', 'A03', '2022-01-02 15:30', '2022-01-02 17:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
+    ('Individual', 'A12', 1, '2021-10-12 14:00', '2021-10-12 16:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Individual
+    ('Individual', 'A02', 1, '2021-11-09 15:00', '2021-11-09 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
+    ('Individual', 'A11', 1, '2021-11-09 15:00', '2021-11-12 11:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
+    ('Individual', 'A09', 1, '2021-10-30 10:00', '2021-10-30 12:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
+    ('Individual', 'A01', 1, '2021-12-12 13:30', '2021-12-12 14:30', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Individual
+    ('Individual', 'A03', 1, '2022-01-02 15:30', '2022-01-02 17:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
 
-    ('Group', 'B10', '2021-10-22 15:30', '2022-10-22 17:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
-    ('Group', 'B11', '2021-11-20 14:30', '2021-11-20 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Group
-    ('Group', 'B05', '2021-12-14 12:00', '2022-12-14 14:30', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
-    ('Group', 'B01', '2022-01-03 13:30', '2022-01-03 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Group
+    ('Group', 'B10', 4, '2021-10-22 15:30', '2022-10-22 17:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
+    ('Group', 'B11', 6, '2021-11-20 14:30', '2021-11-20 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Group
+    ('Group', 'B05', 3, '2021-12-14 12:00', '2022-12-14 14:30', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
+    ('Group', 'B01', 4, '2022-01-03 13:30', '2022-01-03 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Group
 
-    ('Ensemble', 'C02', '2021-11-22 12:30', '2021-11-22 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C08', '2021-12-20 14:30', '2021-12-20 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C15', '2022-01-02 10:30', '2022-01-02 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')); -- Ensemble
-	('Ensemble', 'C02', '2022-01-03 12:30', '2021-01-03 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C08', '2022-01-03 14:30', '2021-01-03 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C15', '2022-01-04 10:30', '2022-01-04 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')); -- Ensemble
-	('Ensemble', 'C02', '2022-01-04 12:30', '2022-01-04 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C08', '2022-01-04 14:30', '2022-01-04 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C15', '2022-01-05 10:30', '2022-01-05 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')); -- Ensemble
+    ('Ensemble', 'C02', 15, '2021-11-22 12:30', '2021-11-22 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C08', 10, '2021-12-20 14:30', '2021-12-20 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', 16, '2022-01-02 10:30', '2022-01-02 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+	  ('Ensemble', 'C02', 14, '2022-01-03 12:30', '2021-01-03 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C08', 12, '2022-01-03 14:30', '2021-01-03 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', 15, '2022-01-04 10:30', '2022-01-04 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+	  ('Ensemble', 'C02', 10, '2022-01-04 12:30', '2022-01-04 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C08', 16, '2022-01-04 14:30', '2022-01-04 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', 14, '2022-01-05 10:30', '2022-01-05 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')); -- Ensemble
 
 
 
@@ -173,15 +173,13 @@ INSERT INTO ensemble (music_lesson_id, genre, minimum_number_of_students, maximu
   VALUES
     (11, 'Jazz', 8, 16),
     (12, 'Rock', 8, 16),
-	(13, 'Classical', 8, 16)
-	(14, 'Jazz', 8, 16),
+	  (13, 'Classical', 8, 16),
+	  (14, 'Jazz', 8, 16),
     (15, 'Rock', 8, 16),
-	(16, 'Classical', 8, 16)
-	(17, 'Jazz', 8, 16),
+	  (16, 'Classical', 8, 16),
+	  (17, 'Jazz', 8, 16),
     (18, 'Rock', 8, 16),
-	(19, 'Classical', 8, 16)
-	
-	;
+	  (19, 'Classical', 8, 16);
 
 --------------------------------------------------------------------------------
 ----------- Tables such as invoices, contracts or applications -----------------

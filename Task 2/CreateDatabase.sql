@@ -95,6 +95,7 @@ CREATE TABLE music_lesson (
  instructor_id INT,
  lesson_type VARCHAR(20),
  room_number VARCHAR(10),
+ amount_of_participants INT,
  time_start TIMESTAMP(10),
  time_end TIMESTAMP(10)
 );
