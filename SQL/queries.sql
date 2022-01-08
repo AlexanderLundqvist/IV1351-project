@@ -45,6 +45,16 @@ FROM music_lesson
 --WHERE EXTRACT(YEAR FROM music_lesson.time_start) = EXTRACT(YEAR FROM CURRENT_DATE)
 WHERE EXTRACT(YEAR FROM music_lesson.time_start) = '2021';
 
+--Specific types average 12 months
+CREATE VIEW avg_specific_lesson AS
+SELECT EXTRACT(MONTH FROM lesson.time_start) AS month,
+  COUNT(CASE WHEN lesson_type = 'Individual' THEN 1 END)::FLOAT / 12 AS individual_lessons,
+  COUNT(CASE WHEN lesson_type = 'Group' THEN 1 END)::FLOAT / 12  AS group_lessons,
+  COUNT(CASE WHEN lesson_type = 'Ensemble' THEN 1 END)::FLOAT / 12  AS ensemble_lessons
+FROM music_lesson AS lesson
+WHERE EXTRACT(YEAR FROM lesson.time_start) = '2021'
+GROUP BY EXTRACT(MONTH FROM lesson.time_start)
+ORDER BY EXTRACT(MONTH FROM lesson.time_start);
 
 
 -- Instructor workload
