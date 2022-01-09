@@ -58,7 +58,7 @@ ORDER BY EXTRACT(YEAR FROM lesson.time_start);
 
 -- Instructor workload
 
-CREATE VIEW workload AS
+CREATE MATERIALIZED VIEW workload AS
 SELECT * FROM(
 SELECT instructor.employment_id, personaldata.first_name, personaldata.last_name, Count(*) as lessons_given
 FROM music_lesson
@@ -70,7 +70,7 @@ ORDER BY Count(*) DESC) AS instructor WHERE lessons_given > 9;
 
 -- Available ensemble spots
 
-CREATE VIEW ensemble_spots AS
+CREATE MATERIALIZED VIEW ensemble_spots AS
 SELECT ensemble.genre AS genre, EXTRACT(DAY FROM lesson.time_start) as weekday,
 (CASE WHEN lesson.amount_of_participants = ensemble.maximum_number_of_students THEN 'Full'
       WHEN (ensemble.maximum_number_of_students - lesson.amount_of_participants) = 1 THEN '1 spot available'
