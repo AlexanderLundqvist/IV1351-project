@@ -1,5 +1,5 @@
 -- All types
-
+DROP VIEW IF EXISTS all_lessons;
 CREATE VIEW all_lessons AS
 SELECT TO_CHAR(music_lesson.time_start, 'month') AS month, Count(*) AS nr_of_lessons
 --SELECT EXTRACT(MONTH FROM music_lesson.time_start) AS Month, Count(*) AS nr_of_lessons
@@ -13,6 +13,7 @@ ORDER BY TO_CHAR(music_lesson.time_start, 'month') DESC;
 -- Specific types of lesson
 
 -- Version 1
+DROP VIEW IF EXISTS specific_lesson;
 CREATE VIEW specific_lesson AS
 SELECT EXTRACT(MONTH FROM lesson.time_start) AS month,
   COUNT(CASE WHEN lesson_type = 'Individual' THEN 1 END) AS individual_lessons,
@@ -25,8 +26,9 @@ GROUP BY EXTRACT(MONTH FROM lesson.time_start)
 ORDER BY EXTRACT(MONTH FROM lesson.time_start);
 
 -- Version 2
--- WIP
-CREATE VIEW specific_lesson2 AS
+-- Bad WIP, ignore for now
+DROP VIEW IF EXISTS specific_lesson_test;
+CREATE VIEW specific_lesson_test AS
 SELECT EXTRACT(MONTH FROM lesson.time_start) AS month,
   (SELECT COUNT(*) FROM individual_lesson AS i WHERE i.music_lesson_id = lesson.id) AS individual_lessons,
   (SELECT COUNT(*) FROM group_lesson AS g WHERE g.music_lesson_id = lesson.id) AS group_lessons,
@@ -39,12 +41,14 @@ ORDER BY EXTRACT(MONTH FROM lesson.time_start);
 
 
 -- All types average 12 months
+DROP VIEW IF EXISTS average;
 CREATE VIEW average AS
 SELECT Count(*)::FLOAT / 12 AS average_nr_of_lessons
 FROM music_lesson
 WHERE EXTRACT(YEAR FROM music_lesson.time_start) = '2021';
 
 --Specific types average 12 months
+DROP VIEW IF EXISTS avg_specific_lesson;
 CREATE VIEW avg_specific_lesson AS
 SELECT EXTRACT(YEAR FROM lesson.time_start) AS year,
   COUNT(CASE WHEN lesson_type = 'Individual' THEN 1 END)::FLOAT / 12 AS individual_lessons,
@@ -57,8 +61,8 @@ ORDER BY EXTRACT(YEAR FROM lesson.time_start);
 
 
 -- Instructor workload
-
-CREATE MATERIALIZED VIEW workload AS
+DROP VIEW IF EXISTS workload;
+CREATE VIEW workload AS
 SELECT * FROM(
 SELECT instructor.employment_id, personaldata.first_name, personaldata.last_name, Count(*) as lessons_given
 FROM music_lesson
@@ -69,8 +73,8 @@ GROUP BY employment_id, personaldata.first_name, personaldata.last_name
 ORDER BY Count(*) DESC) AS instructor WHERE lessons_given > 9;
 
 -- Available ensemble spots
-
-CREATE MATERIALIZED VIEW ensemble_spots AS
+DROP VIEW IF EXISTS ensemble_spots;
+CREATE VIEW ensemble_spots AS
 SELECT ensemble.genre AS genre, EXTRACT(DAY FROM lesson.time_start) as weekday,
 (CASE WHEN lesson.amount_of_participants = ensemble.maximum_number_of_students THEN 'Full'
       WHEN (ensemble.maximum_number_of_students - lesson.amount_of_participants) = 1 THEN '1 spot available'
