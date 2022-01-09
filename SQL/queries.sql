@@ -42,19 +42,18 @@ ORDER BY EXTRACT(MONTH FROM lesson.time_start);
 CREATE VIEW average AS
 SELECT Count(*)::FLOAT / 12 AS average_nr_of_lessons
 FROM music_lesson
---WHERE EXTRACT(YEAR FROM music_lesson.time_start) = EXTRACT(YEAR FROM CURRENT_DATE)
 WHERE EXTRACT(YEAR FROM music_lesson.time_start) = '2021';
 
 --Specific types average 12 months
 CREATE VIEW avg_specific_lesson AS
-SELECT EXTRACT(MONTH FROM lesson.time_start) AS month,
+SELECT EXTRACT(YEAR FROM lesson.time_start) AS year,
   COUNT(CASE WHEN lesson_type = 'Individual' THEN 1 END)::FLOAT / 12 AS individual_lessons,
   COUNT(CASE WHEN lesson_type = 'Group' THEN 1 END)::FLOAT / 12  AS group_lessons,
   COUNT(CASE WHEN lesson_type = 'Ensemble' THEN 1 END)::FLOAT / 12  AS ensemble_lessons
 FROM music_lesson AS lesson
 WHERE EXTRACT(YEAR FROM lesson.time_start) = '2021'
-GROUP BY EXTRACT(MONTH FROM lesson.time_start)
-ORDER BY EXTRACT(MONTH FROM lesson.time_start);
+GROUP BY EXTRACT(YEAR FROM lesson.time_start)
+ORDER BY EXTRACT(YEAR FROM lesson.time_start);
 
 
 -- Instructor workload
@@ -67,7 +66,7 @@ INNER JOIN instructor ON instructor.id = music_lesson.instructor_id
 INNER JOIN personaldata ON instructor.personaldata_id = personaldata.id
 WHERE EXTRACT(MONTH FROM music_lesson.time_start) = EXTRACT(MONTH FROM CURRENT_DATE)
 GROUP BY employment_id, personaldata.first_name, personaldata.last_name
-ORDER BY Count(*) DESC) AS instructor WHERE lessons_given > 1;
+ORDER BY Count(*) DESC) AS instructor WHERE lessons_given > 9;
 
 -- Available ensemble spots
 
