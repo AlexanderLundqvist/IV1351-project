@@ -2,6 +2,8 @@
 This repository contains the project in the course IV1351. The project is a design and implementation of a DBMS for the fictional school Sound Good.
 
 ## Queries printout:
+The query for ensemble_spots is omitted since the data has to be changed manually.
+
 ```
 soundgood=# SELECT * FROM all_lessons;
    month   | nr_of_lessons
