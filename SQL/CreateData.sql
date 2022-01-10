@@ -143,19 +143,19 @@ INSERT INTO music_lesson (lesson_type ,room_number, amount_of_participants, time
     ('Ensemble', 'C02', 15, '2021-11-22 12:30', '2021-11-22 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
     ('Ensemble', 'C08', 10, '2021-12-20 14:30', '2021-12-20 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
 
-    ('Ensemble', 'C15', 16, '2022-01-03 10:30', '2022-01-03 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-	  ('Ensemble', 'C02', 14, '2022-01-04 12:30', '2022-01-04 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C08', 12, '2022-01-05 14:30', '2022-01-05 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C15', 15, '2022-01-06 10:30', '2022-01-06 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-	  ('Ensemble', 'C02', 10, '2022-01-07 12:30', '2022-01-07 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C08', 16, '2022-01-08 14:30', '2022-01-08 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C15', 14, '2022-01-09 10:30', '2022-01-09 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', 16, '2022-01-24 10:30', '2022-01-24 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+	  ('Ensemble', 'C02', 14, '2022-01-24 12:30', '2022-01-24 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C08', 12, '2022-01-25 14:30', '2022-01-25 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', 15, '2022-01-25 10:30', '2022-01-25 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+	  ('Ensemble', 'C02', 10, '2022-01-25 12:30', '2022-01-25 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C08', 16, '2022-01-26 14:30', '2022-01-26 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', 14, '2022-01-26 10:30', '2022-01-26 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
 
     -- Change these to test available spots for next week
-    ('Ensemble', 'C15', 15, '2022-01-10 10:30', '2022-01-10 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-	  ('Ensemble', 'C02', 10, '2022-01-11 12:30', '2022-01-11 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C08', 16, '2022-01-13 14:30', '2022-01-13 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C15', 14, '2022-01-15 10:30', '2022-01-15 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', 15, '2022-01-27 10:30', '2022-01-27 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+	  ('Ensemble', 'C02', 10, '2022-01-27 12:30', '2022-01-27 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C08', 16, '2022-01-28 14:30', '2022-01-28 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C15', 14, '2022-01-28 10:30', '2022-01-28 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
 
     -- Added extra for testing workload
     ('Group', 'B10', 4, '2021-10-22 15:30', '2022-10-22 17:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
