@@ -2,7 +2,7 @@
 This repository contains the project in the course IV1351. The project is a design and implementation of a DBMS for the fictional school Sound Good.
 
 ## Queries printout:
-
+```
 soundgood=# SELECT * FROM all_lessons;
    month   | nr_of_lessons
 -----------+---------------
@@ -41,3 +41,4 @@ soundgood=# SELECT * FROM workload;
  KM111         | Klas       | Malmskog  |             2
  TP444         | Tage       | Paulsson  |             2
 (2 rows)
+```
