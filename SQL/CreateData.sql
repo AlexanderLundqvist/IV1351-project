@@ -130,8 +130,8 @@ INSERT INTO music_lesson (lesson_type ,room_number, amount_of_participants, time
   VALUES
     ('Individual', 'A12', 1, '2021-10-12 14:00', '2021-10-12 16:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Individual
     ('Individual', 'A02', 1, '2021-11-09 15:00', '2021-11-09 16:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
-    ('Individual', 'A11', 1, '2021-11-09 15:00', '2021-11-12 11:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
-    ('Individual', 'A09', 1, '2021-10-30 10:00', '2021-10-30 12:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
+    ('Individual', 'A11', 1, '2021-11-09 15:00', '2021-11-09 11:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
+    ('Individual', 'A09', 1, '2021-11-30 10:00', '2021-11-30 12:30', (SELECT id from instructor WHERE employment_id = 'SD333')), -- Individual
     ('Individual', 'A01', 1, '2021-12-12 13:30', '2021-12-12 14:30', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Individual
     ('Individual', 'A03', 1, '2022-01-02 15:30', '2022-01-02 17:00', (SELECT id from instructor WHERE employment_id = 'BL222')), -- Individual
 
@@ -142,9 +142,10 @@ INSERT INTO music_lesson (lesson_type ,room_number, amount_of_participants, time
 
     ('Ensemble', 'C02', 15, '2021-11-22 12:30', '2021-11-22 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
     ('Ensemble', 'C08', 10, '2021-12-20 14:30', '2021-12-20 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+
     ('Ensemble', 'C15', 16, '2022-01-03 10:30', '2022-01-03 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-	  ('Ensemble', 'C02', 14, '2022-01-04 12:30', '2021-01-04 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C08', 12, '2022-01-05 14:30', '2021-01-05 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+	  ('Ensemble', 'C02', 14, '2022-01-04 12:30', '2022-01-04 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
+    ('Ensemble', 'C08', 12, '2022-01-05 14:30', '2022-01-05 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
     ('Ensemble', 'C15', 15, '2022-01-06 10:30', '2022-01-06 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
 	  ('Ensemble', 'C02', 10, '2022-01-07 12:30', '2022-01-07 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
     ('Ensemble', 'C08', 16, '2022-01-08 14:30', '2022-01-08 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
@@ -154,8 +155,13 @@ INSERT INTO music_lesson (lesson_type ,room_number, amount_of_participants, time
     ('Ensemble', 'C15', 15, '2022-01-10 10:30', '2022-01-10 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
 	  ('Ensemble', 'C02', 10, '2022-01-11 12:30', '2022-01-11 16:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
     ('Ensemble', 'C08', 16, '2022-01-13 14:30', '2022-01-13 17:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
-    ('Ensemble', 'C15', 14, '2022-01-15 10:30', '2022-01-15 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')); -- Ensemble
+    ('Ensemble', 'C15', 14, '2022-01-15 10:30', '2022-01-15 15:00', (SELECT id from instructor WHERE employment_id = 'TP444')), -- Ensemble
 
+    -- Added extra for testing workload
+    ('Group', 'B10', 4, '2021-10-22 15:30', '2022-10-22 17:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
+    ('Group', 'B11', 4, '2021-11-22 15:30', '2022-11-22 17:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
+    ('Group', 'B12', 4, '2021-11-22 15:30', '2022-11-22 17:00', (SELECT id from instructor WHERE employment_id = 'KM111')), -- Group
+    ('Group', 'B13', 4, '2021-12-22 15:30', '2022-12-22 17:00', (SELECT id from instructor WHERE employment_id = 'KM111')); -- Group
 
 INSERT INTO individual_lesson (music_lesson_id, student_id, type_of_instrument)
   VALUES
@@ -171,7 +177,12 @@ INSERT INTO group_lesson (music_lesson_id, type_of_instrument, minimum_number_of
     (7, 'Guitar', 2, 4),
     (8, 'Flute', 2, 4),
     (9, 'Guitar', 2, 4),
-    (10, 'Violin', 2, 4);
+    (10, 'Violin', 2, 4),
+
+    (24, 'Guitar', 2, 4),
+    (25, 'Flute', 2, 4),
+    (26, 'Guitar', 2, 4),
+    (27, 'Violin', 2, 4);
 
 
 INSERT INTO ensemble (music_lesson_id, genre, minimum_number_of_students, maximum_number_of_students)
