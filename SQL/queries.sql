@@ -71,5 +71,5 @@ SELECT ensemble.genre AS genre, EXTRACT(DAY FROM lesson.time_start) as weekday,
       AS spots_left
 FROM ensemble
 INNER JOIN music_lesson AS lesson ON ensemble.music_lesson_id = lesson.id
-WHERE EXTRACT(WEEK FROM lesson.time_start) = EXTRACT(WEEK FROM CURRENT_DATE)+1
+WHERE EXTRACT(WEEK FROM lesson.time_start) = EXTRACT(WEEK FROM CURRENT_DATE)+2 -- Change to 1 for presentation
 GROUP BY ensemble.genre, lesson.amount_of_participants, lesson.time_start, ensemble.maximum_number_of_students;
