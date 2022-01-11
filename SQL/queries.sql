@@ -55,10 +55,10 @@ SELECT instructor.employment_id, personaldata.first_name, personaldata.last_name
 FROM music_lesson
 INNER JOIN instructor ON instructor.id = music_lesson.instructor_id
 INNER JOIN personaldata ON instructor.personaldata_id = personaldata.id
---WHERE EXTRACT(MONTH FROM music_lesson.time_start) = EXTRACT(MONTH FROM CURRENT_DATE)
-WHERE EXTRACT(MONTH FROM music_lesson.time_start) = '12'
+WHERE EXTRACT(MONTH FROM music_lesson.time_start) = EXTRACT(MONTH FROM CURRENT_DATE)
+--WHERE EXTRACT(MONTH FROM music_lesson.time_start) = '12'
 GROUP BY employment_id, personaldata.first_name, personaldata.last_name
-ORDER BY Count(*) DESC) AS instructor WHERE lessons_given > 1;
+ORDER BY Count(*) DESC) AS instructor WHERE lessons_given > 9;
 
 -- Available ensemble spots
 DROP MATERIALIZED VIEW IF EXISTS ensemble_spots;
@@ -72,4 +72,5 @@ SELECT ensemble.genre AS genre, EXTRACT(DAY FROM lesson.time_start) as weekday,
 FROM ensemble
 INNER JOIN music_lesson AS lesson ON ensemble.music_lesson_id = lesson.id
 WHERE EXTRACT(WEEK FROM lesson.time_start) = EXTRACT(WEEK FROM CURRENT_DATE)+1
-GROUP BY ensemble.genre, lesson.amount_of_participants, lesson.time_start, ensemble.maximum_number_of_students;
+GROUP BY ensemble.genre, lesson.amount_of_participants, lesson.time_start, ensemble.maximum_number_of_students
+ORDER BY weekday;
