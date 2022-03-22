@@ -213,7 +213,8 @@ CREATE TABLE lease_contract (
  type_of_instrument VARCHAR(50),
  contract_start_date TIMESTAMP(10),
  contract_end_date TIMESTAMP(10),
- student_id INT NOT NULL
+ student_id INT NOT NULL,
+ active BOOLEAN DEFAULT true -- Lease conract termination status
 );
 
 ALTER TABLE lease_contract ADD CONSTRAINT PK_lease_contract PRIMARY KEY (id);
