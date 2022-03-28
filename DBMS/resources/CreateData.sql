@@ -1,19 +1,22 @@
 -- Delete all rows in all tables when importing file for easier development
-TRUNCATE TABLE soundgood_music_school;
-TRUNCATE TABLE personaldata;
-TRUNCATE TABLE instructor;
-TRUNCATE TABLE administrative_staff;
-TRUNCATE TABLE parent;
-TRUNCATE TABLE student;
-TRUNCATE TABLE rental_instrument_inventory;
-TRUNCATE TABLE soundgood_music_school;
-TRUNCATE TABLE soundgood_music_school;
-TRUNCATE TABLE soundgood_music_school;
-TRUNCATE TABLE soundgood_music_school;
-TRUNCATE TABLE soundgood_music_school;
-TRUNCATE TABLE soundgood_music_school;
-TRUNCATE TABLE soundgood_music_school;
-TRUNCATE TABLE soundgood_music_school;
+TRUNCATE TABLE soundgood_music_school RESTART IDENTITY CASCADE;
+TRUNCATE TABLE personaldata RESTART IDENTITY CASCADE;
+TRUNCATE TABLE administrative_staff RESTART IDENTITY CASCADE;
+TRUNCATE TABLE instructor RESTART IDENTITY CASCADE;
+TRUNCATE TABLE instructor_salary RESTART IDENTITY CASCADE;
+TRUNCATE TABLE parent RESTART IDENTITY CASCADE;
+TRUNCATE TABLE pricing_scheme RESTART IDENTITY CASCADE;
+TRUNCATE TABLE rental_instrument_inventory RESTART IDENTITY CASCADE;
+TRUNCATE TABLE sibling_discount RESTART IDENTITY CASCADE;
+TRUNCATE TABLE student RESTART IDENTITY CASCADE;
+TRUNCATE TABLE student_invoice RESTART IDENTITY CASCADE;
+TRUNCATE TABLE application_form RESTART IDENTITY CASCADE;
+TRUNCATE TABLE bookings RESTART IDENTITY CASCADE;
+TRUNCATE TABLE lease_contract RESTART IDENTITY CASCADE;
+TRUNCATE TABLE music_lesson RESTART IDENTITY CASCADE;
+TRUNCATE TABLE ensemble RESTART IDENTITY CASCADE;
+TRUNCATE TABLE group_lesson RESTART IDENTITY CASCADE;
+TRUNCATE TABLE individual_lesson RESTART IDENTITY CASCADE;
 
 --------------------------------------------------------------------------------
 ------------- Tables involving the human actors in the model -------------------
