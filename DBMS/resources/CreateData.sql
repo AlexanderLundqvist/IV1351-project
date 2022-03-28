@@ -1,3 +1,20 @@
+-- Delete all rows in all tables when importing file for easier development
+TRUNCATE TABLE soundgood_music_school;
+TRUNCATE TABLE personaldata;
+TRUNCATE TABLE instructor;
+TRUNCATE TABLE administrative_staff;
+TRUNCATE TABLE parent;
+TRUNCATE TABLE student;
+TRUNCATE TABLE rental_instrument_inventory;
+TRUNCATE TABLE soundgood_music_school;
+TRUNCATE TABLE soundgood_music_school;
+TRUNCATE TABLE soundgood_music_school;
+TRUNCATE TABLE soundgood_music_school;
+TRUNCATE TABLE soundgood_music_school;
+TRUNCATE TABLE soundgood_music_school;
+TRUNCATE TABLE soundgood_music_school;
+TRUNCATE TABLE soundgood_music_school;
+
 --------------------------------------------------------------------------------
 ------------- Tables involving the human actors in the model -------------------
 --------------------------------------------------------------------------------
@@ -87,13 +104,13 @@ INSERT INTO student (instrument_quota, personaldata_id, parent_id)
 
 -- Instruments
 -- Add more information about instruments
-INSERT INTO rental_instrument_inventory (type_of_instrument, instrument_brand)
+INSERT INTO rental_instrument_inventory (type_of_instrument, instrument_brand, rented)
   VALUES
-  	('Flute', 'Jupiter'),
-  	('Guitar', 'Les Paul'),
-  	('Bagpipe', 'Mctavish'),
-  	('Saxophone', 'Jupiter'),
-  	('Violin', 'Stradivarius');
+  	('Flute', 'Jupiter', FALSE),
+  	('Guitar', 'Les Paul', FALSE),
+  	('Bagpipe', 'Mctavish', FALSE),
+  	('Saxophone', 'Jupiter', FALSE),
+  	('Violin', 'Stradivarius', FALSE);
 
 -- Pricing scheme
 INSERT INTO pricing_scheme (soundgood_music_school_id, price_of_group_lesson, price_of_individual_lesson, beginner_surcharge, intermediate_surcharge, advanced_surcharge)
