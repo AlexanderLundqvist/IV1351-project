@@ -199,6 +199,8 @@ CREATE TABLE rental_instrument_inventory (
  id SERIAL NOT NULL,
  type_of_instrument VARCHAR(50),
  instrument_brand VARCHAR(500),
+ instrument_model_number VARCHAR(50),
+ instrument_name VARCHAR(500),
  rented BOOLEAN DEFAULT FALSE, -- When creating new instruments they are avaliable for renting
  soundgood_music_school_id VARCHAR(10) NOT NULL DEFAULT 'SG1337'
 );

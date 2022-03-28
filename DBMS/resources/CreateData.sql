@@ -62,7 +62,7 @@ INSERT INTO instructor (employment_id, ensemble_teacher, instructor_expertise, p
     ('KM111', FALSE, 'Guitar, piano', (SELECT id from personaldata WHERE personal_number = '197304115156'), 'SG1337'),
     ('BL222', FALSE, 'Saxophone, bagpipe', (SELECT id from personaldata WHERE personal_number = '198406182581'), 'SG1337'),
 	  ('SD333', FALSE, 'Flute, bazoon', (SELECT id from personaldata WHERE personal_number = '198712270924'), 'SG1337'),
-    ('TP444', TRUE, 'Piano, guitar, flute, drums, violin', (SELECT id from personaldata WHERE personal_number = '196909138375'), 'SG1337');
+    ('TP444', FALSE, 'Piano, guitar, flute, drums, violin', (SELECT id from personaldata WHERE personal_number = '196909138375'), 'SG1337');
 
 -- Admin staff
 INSERT INTO administrative_staff (personaldata_id, soundgood_music_school_id)
@@ -104,13 +104,45 @@ INSERT INTO student (instrument_quota, personaldata_id, parent_id)
 
 -- Instruments
 -- Add more information about instruments
-INSERT INTO rental_instrument_inventory (type_of_instrument, instrument_brand, rented)
+INSERT INTO rental_instrument_inventory (type_of_instrument, instrument_brand, instrument_model_number, instrument_name, rented)
   VALUES
-  	('Flute', 'Jupiter', FALSE),
-  	('Guitar', 'Les Paul', FALSE),
-  	('Bagpipe', 'Mctavish', FALSE),
-  	('Saxophone', 'Jupiter', FALSE),
-  	('Violin', 'Stradivarius', FALSE);
+  	('Flute', 'Jupiter', 'JS1849349', 'Sonata', TRUE),
+    ('Flute', 'Jupiter', 'JS9404592', 'Sonata', TRUE),
+    ('Flute', 'Jupiter', 'JS1329310', 'Sonata', TRUE),
+    ('Flute', 'Jupiter', 'JO5367742', 'Oiseaux', TRUE),
+    ('Flute', 'Jupiter', 'JO3425537', 'Oiseaux', TRUE),
+    ('Flute', 'Jupiter', 'JA4326736', 'Anna', TRUE),
+    ('Flute', 'Jupiter', 'JA3423437', 'Anna', TRUE),
+  	('Guitar', 'Les Paul', 'LS3910499', 'Stratocaster', TRUE),
+    ('Guitar', 'Les Paul', 'LS3345529', 'Stratocaster', TRUE),
+    ('Guitar', 'Les Paul', 'LS3040591', 'Stratocaster', TRUE),
+    ('Guitar', 'Les Paul', 'LM3004194', 'Mjolnir', TRUE),
+    ('Guitar', 'Les Paul', 'LM2019485', 'Mjolnir', TRUE),
+    ('Guitar', 'Les Paul', 'LM3940194', 'Mjolnir', TRUE),
+    ('Guitar', 'Les Paul', 'LF3919450', 'Fender', TRUE),
+  	('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', TRUE),
+    ('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', TRUE),
+    ('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', TRUE),
+    ('Bagpipe', 'Mctavish', 'MN3242343', 'Nessie', TRUE),
+    ('Bagpipe', 'Mctavish', 'MN5677432', 'Nessie', TRUE),
+    ('Bagpipe', 'Mctavish', 'MN4567234', 'Nessie', TRUE),
+  	('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', TRUE),
+    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', TRUE),
+    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', TRUE),
+    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', TRUE),
+    ('Saxophone', 'Jupiter', 'JE6582170', 'Epic', TRUE),
+    ('Saxophone', 'Jupiter', 'JE0401051', 'Epic', TRUE),
+    ('Saxophone', 'Jupiter', 'JE5582093', 'Epic', TRUE),
+    ('Saxophone', 'Jupiter', 'JG9581884', 'Groovy', TRUE),
+  	('Violin', 'Stradivarius', 'SI3918419', 'Inverno', TRUE);
+    ('Violin', 'Stradivarius', 'SI1569427', 'Inverno', TRUE);
+    ('Violin', 'Stradivarius', 'SP9475154', 'Primavera', TRUE);
+    ('Violin', 'Stradivarius', 'SP4486817', 'Primavera', TRUE);
+    ('Violin', 'Stradivarius', 'SE4874018', 'Estate' , TRUE);
+    ('Violin', 'Stradivarius', 'SE9571859', 'Estate', TRUE);
+    ('Violin', 'Stradivarius', 'SA8578513', 'Autunno', TRUE);
+    ('Violin', 'Stradivarius', 'SA3918419', 'Autunno', TRUE);
+
 
 -- Pricing scheme
 INSERT INTO pricing_scheme (soundgood_music_school_id, price_of_group_lesson, price_of_individual_lesson, beginner_surcharge, intermediate_surcharge, advanced_surcharge)
