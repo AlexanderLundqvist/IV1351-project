@@ -88,16 +88,16 @@ INSERT INTO parent (personaldata_id)
 -- Absolutely terrible WIP but it works
 INSERT INTO student (instrument_quota, personaldata_id, parent_id)
   VALUES
-    (0, (SELECT id from personaldata WHERE personal_number = '201312095888'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197611275585'))),
+    (2, (SELECT id from personaldata WHERE personal_number = '201312095888'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197611275585'))),
     (0, (SELECT id from personaldata WHERE personal_number = '200911274021'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198004051237'))),
-    (1, (SELECT id from personaldata WHERE personal_number = '201103140039'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197307025221'))),
-    (2, (SELECT id from personaldata WHERE personal_number = '200902032436'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197307025221'))),
-    (0, (SELECT id from personaldata WHERE personal_number = '200210280297'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198110302166'))),
-    (1, (SELECT id from personaldata WHERE personal_number = '200711138821'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197002083146'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '201103140039'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197307025221'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200902032436'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197307025221'))),
+    (1, (SELECT id from personaldata WHERE personal_number = '200210280297'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198110302166'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200711138821'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197002083146'))),
     (0, (SELECT id from personaldata WHERE personal_number = '200004219987'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197002083146'))),
-    (2, (SELECT id from personaldata WHERE personal_number = '200809160776'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '195906137713'))),
-    (1, (SELECT id from personaldata WHERE personal_number = '200605237981'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '195906137713'))),
-    (1, (SELECT id from personaldata WHERE personal_number = '200808190783'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198202229210')));
+    (1, (SELECT id from personaldata WHERE personal_number = '200809160776'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '195906137713'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200605237981'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '195906137713'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200808190783'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198202229210')));
 
 
 
@@ -109,42 +109,42 @@ INSERT INTO student (instrument_quota, personaldata_id, parent_id)
 -- Add more information about instruments
 INSERT INTO rental_instrument_inventory (type_of_instrument, instrument_brand, instrument_model_number, instrument_name, rented)
   VALUES
-  	('Flute', 'Jupiter', 'JS1849349', 'Sonata', TRUE),
-    ('Flute', 'Jupiter', 'JS9404592', 'Sonata', TRUE),
+  	('Flute', 'Jupiter', 'JS1849349', 'Sonata', FALSE),
+    ('Flute', 'Jupiter', 'JS9404592', 'Sonata', FALSE),
     ('Flute', 'Jupiter', 'JS1329310', 'Sonata', TRUE),
-    ('Flute', 'Jupiter', 'JO5367742', 'Oiseaux', TRUE),
-    ('Flute', 'Jupiter', 'JO3425537', 'Oiseaux', TRUE),
-    ('Flute', 'Jupiter', 'JA4326736', 'Anna', TRUE),
-    ('Flute', 'Jupiter', 'JA3423437', 'Anna', TRUE),
-  	('Guitar', 'Les Paul', 'LS3910499', 'Stratocaster', TRUE),
+    ('Flute', 'Jupiter', 'JO5367742', 'Oiseaux', FALSE),
+    ('Flute', 'Jupiter', 'JO3425537', 'Oiseaux', FALSE),
+    ('Flute', 'Jupiter', 'JA4326736', 'Anna', FALSE),
+    ('Flute', 'Jupiter', 'JA3423437', 'Anna', FALSE),
+  	('Guitar', 'Les Paul', 'LS3910499', 'Stratocaster', FALSE),
     ('Guitar', 'Les Paul', 'LS3345529', 'Stratocaster', TRUE),
-    ('Guitar', 'Les Paul', 'LS3040591', 'Stratocaster', TRUE),
-    ('Guitar', 'Les Paul', 'LM3004194', 'Mjolnir', TRUE),
-    ('Guitar', 'Les Paul', 'LM2019485', 'Mjolnir', TRUE),
-    ('Guitar', 'Les Paul', 'LM3940194', 'Mjolnir', TRUE),
-    ('Guitar', 'Les Paul', 'LF3919450', 'Fender', TRUE),
-  	('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', TRUE),
-    ('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', TRUE),
-    ('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', TRUE),
-    ('Bagpipe', 'Mctavish', 'MN3242343', 'Nessie', TRUE),
-    ('Bagpipe', 'Mctavish', 'MN5677432', 'Nessie', TRUE),
-    ('Bagpipe', 'Mctavish', 'MN4567234', 'Nessie', TRUE),
-  	('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', TRUE),
-    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', TRUE),
-    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', TRUE),
-    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', TRUE),
+    ('Guitar', 'Les Paul', 'LS3040591', 'Stratocaster', FALSE),
+    ('Guitar', 'Les Paul', 'LM3004194', 'Mjolnir', FALSE),
+    ('Guitar', 'Les Paul', 'LM2019485', 'Mjolnir', FALSE),
+    ('Guitar', 'Les Paul', 'LM3940194', 'Mjolnir', FALSE),
+    ('Guitar', 'Les Paul', 'LF3919450', 'Fender', FALSE),
+  	('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', FALSE),
+    ('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', FALSE),
+    ('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', FALSE),
+    ('Bagpipe', 'Mctavish', 'MN3242343', 'Nessie', FALSE),
+    ('Bagpipe', 'Mctavish', 'MN5677432', 'Nessie', FALSE),
+    ('Bagpipe', 'Mctavish', 'MN4567234', 'Nessie', FALSE),
+  	('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', FALSE),
+    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', FALSE),
+    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', FALSE),
+    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', FALSE),
     ('Saxophone', 'Jupiter', 'JE6582170', 'Epic', TRUE),
-    ('Saxophone', 'Jupiter', 'JE0401051', 'Epic', TRUE),
-    ('Saxophone', 'Jupiter', 'JE5582093', 'Epic', TRUE),
-    ('Saxophone', 'Jupiter', 'JG9581884', 'Groovy', TRUE),
-  	('Violin', 'Stradivarius', 'SI3918419', 'Inverno', TRUE);
-    ('Violin', 'Stradivarius', 'SI1569427', 'Inverno', TRUE);
-    ('Violin', 'Stradivarius', 'SP9475154', 'Primavera', TRUE);
-    ('Violin', 'Stradivarius', 'SP4486817', 'Primavera', TRUE);
-    ('Violin', 'Stradivarius', 'SE4874018', 'Estate' , TRUE);
-    ('Violin', 'Stradivarius', 'SE9571859', 'Estate', TRUE);
-    ('Violin', 'Stradivarius', 'SA8578513', 'Autunno', TRUE);
-    ('Violin', 'Stradivarius', 'SA3918419', 'Autunno', TRUE);
+    ('Saxophone', 'Jupiter', 'JE0401051', 'Epic', FALSE),
+    ('Saxophone', 'Jupiter', 'JE5582093', 'Epic', FALSE),
+    ('Saxophone', 'Jupiter', 'JG9581884', 'Groovy', FALSE),
+  	('Violin', 'Stradivarius', 'SI3918419', 'Inverno', FALSE),
+    ('Violin', 'Stradivarius', 'SI1569427', 'Inverno', FALSE),
+    ('Violin', 'Stradivarius', 'SP9475154', 'Primavera', FALSE),
+    ('Violin', 'Stradivarius', 'SP4486817', 'Primavera', TRUE),
+    ('Violin', 'Stradivarius', 'SE4874018', 'Estate', FALSE),
+    ('Violin', 'Stradivarius', 'SE9571859', 'Estate', FALSE),
+    ('Violin', 'Stradivarius', 'SA8578513', 'Autunno', FALSE),
+    ('Violin', 'Stradivarius', 'SA3918419', 'Autunno', FALSE);
 
 
 -- Pricing scheme
@@ -289,10 +289,10 @@ INSERT INTO application_form (administrative_staff_id, type_of_instrument, level
 -- Lease contract
 INSERT INTO lease_contract (instrument_id, type_of_instrument, contract_start_date, contract_end_date, student_id)
   VALUES
-    (2, 'Guitar', '2021/09/01 13:00:00', '2022/06/01 13:00:00', 1),
-    (1, 'Flute', '2021/10/10 13:00:00', '2022/10/10 13:00:00', 3),
-    (5, 'Violin', '2021/09/22 13:00:00', '2022/05/22 13:00:00', 5),
-	  (4, 'Saxophone', '2021/08/30 13:00:00', '2022/05/30 13:00:00', 8);
+    (3, (SELECT type_of_instrument from rental_instrument_inventory WHERE id = 3), '2021/09/01 13:00:00', '2022/06/01 13:00:00', 1),
+    (9, (SELECT type_of_instrument from rental_instrument_inventory WHERE id = 9), '2021/10/10 13:00:00', '2022/10/10 13:00:00', 1),
+    (25, (SELECT type_of_instrument from rental_instrument_inventory WHERE id = 25), '2021/09/22 13:00:00', '2022/05/22 13:00:00', 5),
+	  (32, (SELECT type_of_instrument from rental_instrument_inventory WHERE id = 32), '2021/08/30 13:00:00', '2022/05/30 13:00:00', 8);
 
 -- Student payments
 INSERT INTO student_invoice (student_id, amount_of_individual_lessons, amount_of_group_lessons, amount_of_ensemble, instrument_fee, total_price, month)

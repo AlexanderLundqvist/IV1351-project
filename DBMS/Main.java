@@ -1,37 +1,54 @@
-import java.util.Scanner;
-import 
+import java.util.*;
+import java.sql.*;
 
+
+/**
+ * This class is a basic assdfjsdfkjsfkjn
+ * @author Alexander Lundqvist & Max Dern
+ */
 public class Main {
-    private Connection connection;
+    private PreparedStatement listAllInstrumentsStmt;
+    private PreparedStatement createNewRentalStmt;
+    private PreparedStatement terminateRentalStmt;
+    private PreparedStatement checkStudentRentalsStmt;
+    private Connection DBconnection;
 
-    private PreparedStatement createHolderStmt;
-    private PreparedStatement findHolderPKStmt;
-    private PreparedStatement createAccountStmt;
-    private PreparedStatement findAccountByNameStmt;
-
-
-    public BankDAO() throws BankDBException {
+    private void connectToDatabase() throws SQLException, ClassNotFoundException {
         try {
-            connectToBankDB();
-            prepareStatements();
-        } catch (ClassNotFoundException | SQLException exception) {
-            throw new BankDBException("Could not connect to datasource.", exception);
+            DBconnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/soundgood", "postgres", "postgres");
+            DBconnection.setAutoCommit(false);
+            System.out.println("Connection established!");
+        } catch (Exception ex) {
+            System.out.println("Couldn't connect to database...");
         }
     }
 
-
-    private void connectToDatabase() throws ClassNotFoundException, SQLException {
-        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/soundgood",
-                                                 "postgres", "postgres");
-        connection.setAutoCommit(false);
-        return connection;
+    private void prepareStatements(Connection connection) throws SQLException {
+        listAllInstrumentsStmt = connection.prepareStatement("SELECT * FROM rental_instrument_inventory WHERE rented = FALSE");
+        createNewRentalStmt = connection.prepareStatement("SELECT * FROM rental_instrument_inventory");
+        terminateRentalStmt = connection.prepareStatement("SELECT * FROM rental_instrument_inventory");
     }
 
-    public void runInterface() {
+    private void interfaceMenu() {
+       System.out.println("*************************************************************");
+       System.out.println("********  Soundgood music school - Instrument rental ********");
+       System.out.println("*************************************************************");
+       System.out.println("*                                                           *");
+       System.out.println("* 1. List all instruments.                                  *");
+       System.out.println("* 2. Rent instrument.                                       *");
+       System.out.println("* 3. Terminate rental.                                      *");
+       System.out.println("* 4. Exit rental interface                                  *");
+       System.out.println("*                                                           *");
+       System.out.println("*************************************************************");
+    }
+
+    public static void main(String[] args) {
+        Main dbms = new Main();
         try {
+            dbms.connectToDatabase();
             Scanner scanner = new Scanner(System.in);
             while(true) {
-                interfaceMenu();
+                dbms.interfaceMenu();
                 System.out.println("Enter you choice: ");
                 int choice = scanner.nextInt();
                 System.out.println();
@@ -57,24 +74,8 @@ public class Main {
                 System.out.println();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("Error: " + ex);
         }
-    }
 
-    private void interfaceMenu() {
-       System.out.println("*************************************************************");
-       System.out.println("********  Soundgood music school - Instrument rental ********");
-       System.out.println("*************************************************************");
-       System.out.println("*                                                           *");
-       System.out.println("* 1. List all instruments.                                  *");
-       System.out.println("* 2. Rent instrument.                                       *");
-       System.out.println("* 3. Terminate rental.                                      *");
-       System.out.println("* 4. Exit rental interface                                  *");
-       System.out.println("*                                                           *");
-       System.out.println("*************************************************************");
-    }
-
-    public static void main(String[] args) {
-      runInterface();
     }
 }
