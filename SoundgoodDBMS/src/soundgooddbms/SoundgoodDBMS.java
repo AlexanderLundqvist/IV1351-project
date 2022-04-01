@@ -2,11 +2,6 @@ package soundgooddbms;
 import java.util.*;
 import java.sql.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 /**
  * This class is a basic assdfjsdfkjsfkjn
  * @author Alexander Lundqvist & Max Dern
@@ -46,7 +41,18 @@ public class SoundgoodDBMS {
     }
     
     private void listAllInstruments() {
-        
+        try (ResultSet instruments = listAllInstrumentsStmt.executeQuery()) {
+            while (instruments.next()) {
+              System.out.println(
+                "ID: " + instruments.getString(1) +
+                ", Name: " + instruments.getString(5) + 
+                ", Type: " + instruments.getString(2) + 
+                ", Brand: " + instruments.getString(3));
+            }
+        } catch (SQLException sqle) {
+            //connection.rollback();
+            sqle.printStackTrace();
+        }
     }
     
     private void rentInstrument() {
@@ -106,11 +112,11 @@ public class SoundgoodDBMS {
                         break;
                     case 2:
                         System.out.println("Enter rental process here");
-                        // Do something else
+                        dbms.rentInstrument();
                         break;
                     case 3:
                         System.out.println("Enter termination process here");
-                        // Terminate something
+                        dbms.terminateRental();
                         break;
                     case 4:
                         System.out.println("\nExiting...");
