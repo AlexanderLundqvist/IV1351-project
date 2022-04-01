@@ -10,6 +10,7 @@ public class SoundgoodDBMS {
     private String database = "soundgood";
     private String user     = "postgres";
     private String password = "postgres";
+    private Connection connection;
     
     private PreparedStatement listAllInstrumentsStmt;
     private PreparedStatement createNewRentalStmt;
@@ -47,7 +48,8 @@ public class SoundgoodDBMS {
                 "ID: " + instruments.getString(1) +
                 ", Name: " + instruments.getString(5) + 
                 ", Type: " + instruments.getString(2) + 
-                ", Brand: " + instruments.getString(3));
+                ", Brand: " + instruments.getString(3) +
+                ", Price: " + instruments.getInt(6));
             }
         } catch (SQLException sqle) {
             //connection.rollback();
@@ -62,7 +64,40 @@ public class SoundgoodDBMS {
     private void terminateRental() {
         
     }
-     
+    
+    
+    public void commit() throws SQLException {
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            handleException("Failed to commit", e);
+        }
+    }
+
+    
+     private void handleException(String failureMsg, Exception cause) throws SQLException {
+        String completeFailureMsg = failureMsg;
+        try {
+            connection.rollback();
+        } catch (SQLException rollbackExc) {
+            completeFailureMsg = completeFailureMsg + 
+            ". Also failed to rollback transaction because of: " + rollbackExc.getMessage();
+        }
+
+        if (cause != null) {
+            throw new SQLException(failureMsg, cause);
+        } else {
+            throw new SQLException(failureMsg);
+        }
+    }
+
+    private void closeResultSet(String failureMsg, ResultSet result) throws SQLException {
+        try {
+            result.close();
+        } catch (Exception e) {
+            throw new SQLException(failureMsg + " Could not close result set.", e);
+        }
+    }
     /**
      * 
      * @param connection
