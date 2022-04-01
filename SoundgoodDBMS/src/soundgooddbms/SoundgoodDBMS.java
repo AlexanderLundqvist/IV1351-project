@@ -37,10 +37,6 @@ public class SoundgoodDBMS {
         return connection;
     }
     
-    private void accessDatabase() {
-        
-    }
-    
     private void listAllInstruments() {
         try (ResultSet instruments = listAllInstrumentsStmt.executeQuery()) {
             while (instruments.next()) {
@@ -58,7 +54,12 @@ public class SoundgoodDBMS {
     }
     
     private void rentInstrument() {
-        
+        try (ResultSet instruments = createNewRentalStmt.executeQuery()) {
+            
+        } catch (SQLException sqle) {
+            //connection.rollback();
+            sqle.printStackTrace();
+        }
     }
     
     private void terminateRental() {
@@ -104,9 +105,14 @@ public class SoundgoodDBMS {
      * @throws SQLException 
      */
     private void prepareStatements(Connection connection) throws SQLException {
-        listAllInstrumentsStmt = connection.prepareStatement("SELECT * FROM rental_instrument_inventory WHERE rented = FALSE");
-        createNewRentalStmt = connection.prepareStatement("SELECT * FROM rental_instrument_inventory");
-        terminateRentalStmt = connection.prepareStatement("SELECT * FROM rental_instrument_inventory");
+        listAllInstrumentsStmt = connection.prepareStatement(
+                "SELECT * FROM rental_instrument_inventory WHERE rented = FALSE");
+        
+        createNewRentalStmt = connection.prepareStatement(
+                "UPDATE rental_instrument_inventory SET rented = TRUE WHERE id = ?");
+        
+        terminateRentalStmt = connection.prepareStatement(
+                "SELECT * FROM rental_instrument_inventory");
     }
     
     /**
@@ -146,7 +152,8 @@ public class SoundgoodDBMS {
                         dbms.listAllInstruments();
                         break;
                     case 2:
-                        System.out.println("Enter rental process here");
+                        System.out.println("Enter enter the ID of the instrument you want to rent: ");
+                        int id = scanner.nextInt();
                         dbms.rentInstrument();
                         break;
                     case 3:
