@@ -3,3 +3,6 @@ DBMS/SoundGoodDBMS/nbproject/build-impl.xml
 DBMS/SoundGoodDBMS/nbproject/genfiles.properties
 DBMS/SoundGoodDBMS/nbproject/private/private.properties
 /DBMS/SoundGoodDBMS/build/
+SoundgoodDBMS/build/built-jar.properties
+SoundgoodDBMS/build/classes/soundgooddbms/SoundgoodDBMS.class
+SoundgoodDBMS/dist/SoundgoodDBMS.jar
