@@ -41,7 +41,7 @@ public class SoundgoodDBMS {
         try (ResultSet instruments = listAllInstrumentsStmt.executeQuery()) {
             while (instruments.next()) {
               System.out.println(
-                "ID: " + instruments.getString(1) +
+                "ID: " + instruments.getInt(1) +
                 ", Name: " + instruments.getString(5) + 
                 ", Type: " + instruments.getString(2) + 
                 ", Brand: " + instruments.getString(3) +
@@ -53,11 +53,13 @@ public class SoundgoodDBMS {
         }
     }
     
-    private void rentInstrument() {
-        try (ResultSet instruments = createNewRentalStmt.executeQuery()) {
-            
+    private void rentInstrument(Connection connection, int id) throws SQLException {
+        try {
+            createNewRentalStmt.setInt(1, id);
+            createNewRentalStmt.execute();
+            connection.commit();
         } catch (SQLException sqle) {
-            //connection.rollback();
+            connection.rollback();
             sqle.printStackTrace();
         }
     }
@@ -119,16 +121,16 @@ public class SoundgoodDBMS {
      * CLI menu.
      */
     private void interfaceMenu() {
-       System.out.println("*************************************************************");
-       System.out.println("********  Soundgood music school - Instrument rental ********");
-       System.out.println("*************************************************************");
-       System.out.println("*                                                           *");
-       System.out.println("* 1. List all instruments.                                  *");
-       System.out.println("* 2. Rent instrument.                                       *");
-       System.out.println("* 3. Terminate rental.                                      *");
-       System.out.println("* 4. Exit rental interface                                  *");
-       System.out.println("*                                                           *");
-       System.out.println("*************************************************************");
+       System.out.println("*****************************************************************************");
+       System.out.println("****************  Soundgood music school - Instrument rental ****************");
+       System.out.println("*****************************************************************************");
+       System.out.println("*                                                                           *");
+       System.out.println("* 1. List available instruments.                                            *");
+       System.out.println("* 2. Rent instrument.                                                       *");
+       System.out.println("* 3. Terminate rental.                                                      *");
+       System.out.println("* 4. Exit rental interface                                                  *");
+       System.out.println("*                                                                           *");
+       System.out.println("*****************************************************************************");
     }
     
     /**
@@ -154,7 +156,7 @@ public class SoundgoodDBMS {
                     case 2:
                         System.out.println("Enter enter the ID of the instrument you want to rent: ");
                         int id = scanner.nextInt();
-                        dbms.rentInstrument();
+                        dbms.rentInstrument(DBconnection, id);
                         break;
                     case 3:
                         System.out.println("Enter termination process here");
