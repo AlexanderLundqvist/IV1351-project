@@ -56,9 +56,9 @@ public class SoundgoodDBMS {
         }
     }
     
-    private void rentInstrument(Connection connection, int id) throws SQLException {
+    private void rentInstrument(Connection connection, int instrumentId, String startDate, String endDate, int studentId) throws SQLException {
         try {
-            createNewLeaseContractStmt.setInt(1, id);
+            createNewLeaseContractStmt.setInt(1, instrumentId);
             createNewLeaseContractStmt.execute();
             connection.commit();
         } catch (SQLException sqle) {
@@ -114,7 +114,8 @@ public class SoundgoodDBMS {
                 "SELECT * FROM rental_instrument_inventory WHERE rented = FALSE");
         
         createNewLeaseContractStmt = connection.prepareStatement(
-                "UPDATE rental_instrument_inventory SET rented = TRUE WHERE id = ?");
+                "INSERT INTO lease_contract (instrument_id, type_of_instrument, contract_start_date, contract_end_date, student_id) " + 
+                "VALUES (?, (SELECT type_of_instrument from rental_instrument_inventory WHERE id = ?), ?, ?, ?)");
         
         updateInstrumentStatusStmt = connection.prepareStatement(
                 "UPDATE rental_instrument_inventory SET rented = ? WHERE id = ?");
@@ -163,8 +164,19 @@ public class SoundgoodDBMS {
                         dbms.listAllInstruments();
                         break;
                     case 2:
+                        // Needs check here
+                        System.out.println("Enter your student ID: ");
+                        int studentId = scanner.nextInt();
+                        
                         System.out.println("Enter enter the ID of the instrument you want to rent: ");
-                        int id = scanner.nextInt();
+                        int instrumentId = scanner.nextInt();
+                        
+                        System.out.println("Enter enter the ID of the instrument you want to rent: ");
+                        String id = scanner.nextInt();
+                        
+                        System.out.println("Enter enter the ID of the instrument you want to rent: ");
+                        String id = scanner.nextInt();
+                        
                         dbms.rentInstrument(DBconnection, id);
                         break;
                     case 3:
