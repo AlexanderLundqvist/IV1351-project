@@ -13,9 +13,12 @@ public class SoundgoodDBMS {
     private Connection connection;
     
     private PreparedStatement listAllInstrumentsStmt;
-    private PreparedStatement createNewRentalStmt;
-    private PreparedStatement terminateRentalStmt;
-    private PreparedStatement checkStudentRentalsStmt;
+    private PreparedStatement createNewLeaseContractStmt;
+    private PreparedStatement terminateLeaseContractStmt;
+    private PreparedStatement updateInstrumentStatusStmt;
+    private PreparedStatement updateInstrumentQuotaStmt;
+    
+    
         
     /**
      * 
@@ -55,8 +58,8 @@ public class SoundgoodDBMS {
     
     private void rentInstrument(Connection connection, int id) throws SQLException {
         try {
-            createNewRentalStmt.setInt(1, id);
-            createNewRentalStmt.execute();
+            createNewLeaseContractStmt.setInt(1, id);
+            createNewLeaseContractStmt.execute();
             connection.commit();
         } catch (SQLException sqle) {
             connection.rollback();
@@ -78,7 +81,7 @@ public class SoundgoodDBMS {
     }
 
     
-     private void handleException(String failureMsg, Exception cause) throws SQLException {
+    private void handleException(String failureMsg, Exception cause) throws SQLException {
         String completeFailureMsg = failureMsg;
         try {
             connection.rollback();
@@ -110,10 +113,16 @@ public class SoundgoodDBMS {
         listAllInstrumentsStmt = connection.prepareStatement(
                 "SELECT * FROM rental_instrument_inventory WHERE rented = FALSE");
         
-        createNewRentalStmt = connection.prepareStatement(
+        createNewLeaseContractStmt = connection.prepareStatement(
                 "UPDATE rental_instrument_inventory SET rented = TRUE WHERE id = ?");
         
-        terminateRentalStmt = connection.prepareStatement(
+        updateInstrumentStatusStmt = connection.prepareStatement(
+                "UPDATE rental_instrument_inventory SET rented = ? WHERE id = ?");
+        
+        updateInstrumentQuotaStmt = connection.prepareStatement(
+                "UPDATE rental_instrument_inventory SET rented = ? WHERE id = ?");
+        
+        terminateLeaseContractStmt = connection.prepareStatement(
                 "SELECT * FROM rental_instrument_inventory");
     }
     
