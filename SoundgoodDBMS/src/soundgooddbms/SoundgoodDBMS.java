@@ -1,6 +1,8 @@
 package soundgooddbms;
 import java.util.*;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * This class is a basic assdfjsdfkjsfkjn
@@ -55,10 +57,20 @@ public class SoundgoodDBMS {
         }
     }
     
-    private void rentInstrument(Connection connection, int instrumentId, String startDate, String endDate, int studentId) throws SQLException {
+    private void rentInstrument(Connection connection, int instrumentId, Timestamp startDate, Timestamp endDate, int studentId) throws SQLException {
         try {
             createNewLeaseContractStmt.setInt(1, instrumentId);
+            createNewLeaseContractStmt.setInt(2, instrumentId);
+            createNewLeaseContractStmt.setTimestamp(3, startDate);
+            createNewLeaseContractStmt.setTimestamp(4, endDate);
+            createNewLeaseContractStmt.setInt(5, studentId);
             createNewLeaseContractStmt.execute();
+            updateInstrumentStatusStmt.setBoolean(1, true);
+            updateInstrumentStatusStmt.setInt(2, instrumentId);
+            updateInstrumentStatusStmt.execute();
+            updateInstrumentQuotaStmt.setInt(1, 1);
+            updateInstrumentQuotaStmt.setInt(2, studentId);
+            updateInstrumentQuotaStmt.execute();
             connection.commit();
         } catch (SQLException sqle) {
             connection.rollback();
@@ -127,7 +139,7 @@ public class SoundgoodDBMS {
                 "UPDATE rental_instrument_inventory SET rented = ? WHERE id = ?");
         
         updateInstrumentQuotaStmt = connection.prepareStatement(
-                "UPDATE rental_instrument_inventory SET rented = ? WHERE id = ?");
+                "UPDATE student SET instrument_quota = instrument_quota + ? WHERE id = ?");
         
         terminateLeaseContractStmt = connection.prepareStatement(
                 "SELECT * FROM rental_instrument_inventory");
@@ -147,6 +159,14 @@ public class SoundgoodDBMS {
        System.out.println("* 4. Exit rental interface                                                  *");
        System.out.println("*                                                                           *");
        System.out.println("*****************************************************************************");
+    }
+    
+    public static Timestamp stringToTimestamp(String string) {
+        String dateTime = string.trim() + " 13:00:00";
+        DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime localDateTime = LocalDateTime.from(formatDateTime.parse(dateTime));
+        Timestamp timestamp = Timestamp.valueOf(localDateTime);
+        return timestamp;
     }
     
     /**
@@ -177,11 +197,13 @@ public class SoundgoodDBMS {
                         System.out.println("Enter enter the ID of the instrument you want to rent: ");
                         int instrumentId = scanner.nextInt();
                         
-                        System.out.println("Enter enter the ID of the instrument you want to rent: ");
-                        String startDate = scanner.next();
+                        System.out.println("Enter enter start date of rental <dd/mm/yyyy>: ");
+                        String start = scanner.next();
+                        Timestamp startDate = stringToTimestamp(start);
                         
-                        System.out.println("Enter enter the ID of the instrument you want to rent: ");
-                        String endDate = scanner.next();
+                        System.out.println("Enter enter end date of rental <dd/mm/yyyy>: ");
+                        String end = scanner.next();
+                        Timestamp endDate = stringToTimestamp(end);
                         
                         dbms.rentInstrument(DBconnection, instrumentId, startDate, endDate, studentId);
                         break;
