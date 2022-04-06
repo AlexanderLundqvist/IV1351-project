@@ -43,6 +43,7 @@ public class SoundgoodDBMS {
               System.out.println(
                 "ID: " + instruments.getInt(1) +
                 ", Name: " + instruments.getString(5) + 
+                ", Model number: " + instruments.getString(4) +
                 ", Type: " + instruments.getString(2) + 
                 ", Brand: " + instruments.getString(3) +
                 ", Price: " + instruments.getInt(6));
@@ -64,8 +65,15 @@ public class SoundgoodDBMS {
         }
     }
     
-    private void terminateRental() {
-        
+    private void terminateRental(Connection connection, int terminateID) throws SQLException {
+        try {
+            terminateRentalStmt.setInt(1, terminateID);
+            terminateRentalStmt.execute();
+            connection.commit();
+        } catch (SQLException sqle) {
+            connection.rollback();
+            sqle.printStackTrace();
+        }
     }
     
     
@@ -114,7 +122,7 @@ public class SoundgoodDBMS {
                 "UPDATE rental_instrument_inventory SET rented = TRUE WHERE id = ?");
         
         terminateRentalStmt = connection.prepareStatement(
-                "SELECT * FROM rental_instrument_inventory");
+                "UPDATE rental_instrument_inventory SET rented = FALSE WHERE id = ?" );
     }
     
     /**
@@ -160,7 +168,8 @@ public class SoundgoodDBMS {
                         break;
                     case 3:
                         System.out.println("Enter termination process here");
-                        dbms.terminateRental();
+                        int terminateID = scanner.nextInt();
+                        dbms.terminateRental(DBconnection, terminateID);
                         break;
                     case 4:
                         System.out.println("\nExiting...");
