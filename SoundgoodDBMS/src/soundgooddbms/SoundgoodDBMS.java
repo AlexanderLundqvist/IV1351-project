@@ -57,23 +57,12 @@ public class SoundgoodDBMS {
             sqle.printStackTrace();
         }
     }
-    
-    /*
-     private void listAllContracts(Connection connection, int studenttermId){
-         try{ activeLeaseContractStmt.getString( studenttermId);
-            activeLeaseContractStmt.execute();
-             
-         } catch (SQLException sqle){
-              //connection.rollback();
-            sqle.printStackTrace();
-         }
-     }
-    */
-    
+       
     
     private void listAllContracts(Connection connection, int studenttermId) {
-        try {activeLeaseContractStmt.setInt(1, studenttermId);
-                //createNewLeaseContractStmt.execute();
+        try {
+            activeLeaseContractStmt.setInt(1, studenttermId);
+            //activeLeaseContractStmt.execute();
             ResultSet contract = activeLeaseContractStmt.executeQuery();
             while (contract.next()) {
 
