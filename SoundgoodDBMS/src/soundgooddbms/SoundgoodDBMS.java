@@ -71,8 +71,8 @@ public class SoundgoodDBMS {
                 ", Start date: " + contract.getString(4) + 
                 ", End date: " + contract.getString(5) +
                 ", Type: " + contract.getString(3) + 
-                ", Student ID: " + contract.getString(6) +
-                ", Active: " + contract.getString(7));
+                ", Student ID: " + contract.getString(6));
+                //", Active: " + contract.getString(7));
             }
         } catch (SQLException sqle) {
             //connection.rollback();
@@ -175,7 +175,7 @@ public class SoundgoodDBMS {
         terminateLeaseContractStmt = connection.prepareStatement(
                 "UPDATE lease_contract SET active = ? WHERE instrument_id = ?");
         activeLeaseContractStmt = connection.prepareStatement(
-        "SELECT * FROM lease_contract WHERE student_id = ?");
+        "SELECT * FROM lease_contract WHERE student_id = ? AND active = TRUE");
     }
     
     /**
