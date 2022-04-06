@@ -13,9 +13,10 @@ public class SoundgoodDBMS {
     private Connection connection;
     
     private PreparedStatement listAllInstrumentsStmt;
-    private PreparedStatement createNewRentalStmt;
-    private PreparedStatement terminateRentalStmt;
-    private PreparedStatement checkStudentRentalsStmt;
+    private PreparedStatement createNewLeaseContractStmt;
+    private PreparedStatement terminateLeaseContractStmt;
+    private PreparedStatement updateInstrumentStatusStmt;
+    private PreparedStatement updateInstrumentQuotaStmt;
         
     /**
      * 
@@ -54,10 +55,10 @@ public class SoundgoodDBMS {
         }
     }
     
-    private void rentInstrument(Connection connection, int id) throws SQLException {
+    private void rentInstrument(Connection connection, int instrumentId, String startDate, String endDate, int studentId) throws SQLException {
         try {
-            createNewRentalStmt.setInt(1, id);
-            createNewRentalStmt.execute();
+            createNewLeaseContractStmt.setInt(1, instrumentId);
+            createNewLeaseContractStmt.execute();
             connection.commit();
         } catch (SQLException sqle) {
             connection.rollback();
@@ -67,8 +68,8 @@ public class SoundgoodDBMS {
     
     private void terminateRental(Connection connection, int terminateID) throws SQLException {
         try {
-            terminateRentalStmt.setInt(1, terminateID);
-            terminateRentalStmt.execute();
+            terminateLeaseContractStmt.setInt(1, terminateID);
+            terminateLeaseContractStmt.execute();
             connection.commit();
         } catch (SQLException sqle) {
             connection.rollback();
@@ -118,11 +119,18 @@ public class SoundgoodDBMS {
         listAllInstrumentsStmt = connection.prepareStatement(
                 "SELECT * FROM rental_instrument_inventory WHERE rented = FALSE");
         
-        createNewRentalStmt = connection.prepareStatement(
-                "UPDATE rental_instrument_inventory SET rented = TRUE WHERE id = ?");
+        createNewLeaseContractStmt = connection.prepareStatement(
+                "INSERT INTO lease_contract (instrument_id, type_of_instrument, contract_start_date, contract_end_date, student_id) " + 
+                "VALUES (?, (SELECT type_of_instrument from rental_instrument_inventory WHERE id = ?), ?, ?, ?)");
         
-        terminateRentalStmt = connection.prepareStatement(
-                "UPDATE rental_instrument_inventory SET rented = FALSE WHERE id = ?" );
+        updateInstrumentStatusStmt = connection.prepareStatement(
+                "UPDATE rental_instrument_inventory SET rented = ? WHERE id = ?");
+        
+        updateInstrumentQuotaStmt = connection.prepareStatement(
+                "UPDATE rental_instrument_inventory SET rented = ? WHERE id = ?");
+        
+        terminateLeaseContractStmt = connection.prepareStatement(
+                "SELECT * FROM rental_instrument_inventory");
     }
     
     /**
@@ -162,14 +170,24 @@ public class SoundgoodDBMS {
                         dbms.listAllInstruments();
                         break;
                     case 2:
+                        // Needs check here
+                        System.out.println("Enter your student ID: ");
+                        int studentId = scanner.nextInt();
+                        
                         System.out.println("Enter enter the ID of the instrument you want to rent: ");
-                        int id = scanner.nextInt();
-                        dbms.rentInstrument(DBconnection, id);
+                        int instrumentId = scanner.nextInt();
+                        
+                        System.out.println("Enter enter the ID of the instrument you want to rent: ");
+                        String startDate = scanner.next();
+                        
+                        System.out.println("Enter enter the ID of the instrument you want to rent: ");
+                        String endDate = scanner.next();
+                        
+                        dbms.rentInstrument(DBconnection, instrumentId, startDate, endDate, studentId);
                         break;
                     case 3:
                         System.out.println("Enter termination process here");
-                        int terminateID = scanner.nextInt();
-                        dbms.terminateRental(DBconnection, terminateID);
+                        //dbms.terminateRental();
                         break;
                     case 4:
                         System.out.println("\nExiting...");
