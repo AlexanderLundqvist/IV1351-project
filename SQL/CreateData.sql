@@ -1,3 +1,23 @@
+-- Delete all rows in all tables when importing file for easier development
+TRUNCATE TABLE soundgood_music_school RESTART IDENTITY CASCADE;
+TRUNCATE TABLE personaldata RESTART IDENTITY CASCADE;
+TRUNCATE TABLE administrative_staff RESTART IDENTITY CASCADE;
+TRUNCATE TABLE instructor RESTART IDENTITY CASCADE;
+TRUNCATE TABLE instructor_salary RESTART IDENTITY CASCADE;
+TRUNCATE TABLE parent RESTART IDENTITY CASCADE;
+TRUNCATE TABLE pricing_scheme RESTART IDENTITY CASCADE;
+TRUNCATE TABLE rental_instrument_inventory RESTART IDENTITY CASCADE;
+TRUNCATE TABLE sibling_discount RESTART IDENTITY CASCADE;
+TRUNCATE TABLE student RESTART IDENTITY CASCADE;
+TRUNCATE TABLE student_invoice RESTART IDENTITY CASCADE;
+TRUNCATE TABLE application_form RESTART IDENTITY CASCADE;
+TRUNCATE TABLE bookings RESTART IDENTITY CASCADE;
+TRUNCATE TABLE lease_contract RESTART IDENTITY CASCADE;
+TRUNCATE TABLE music_lesson RESTART IDENTITY CASCADE;
+TRUNCATE TABLE ensemble RESTART IDENTITY CASCADE;
+TRUNCATE TABLE group_lesson RESTART IDENTITY CASCADE;
+TRUNCATE TABLE individual_lesson RESTART IDENTITY CASCADE;
+
 --------------------------------------------------------------------------------
 ------------- Tables involving the human actors in the model -------------------
 --------------------------------------------------------------------------------
@@ -45,7 +65,7 @@ INSERT INTO instructor (employment_id, ensemble_teacher, instructor_expertise, p
     ('KM111', FALSE, 'Guitar, piano', (SELECT id from personaldata WHERE personal_number = '197304115156'), 'SG1337'),
     ('BL222', FALSE, 'Saxophone, bagpipe', (SELECT id from personaldata WHERE personal_number = '198406182581'), 'SG1337'),
 	  ('SD333', FALSE, 'Flute, bazoon', (SELECT id from personaldata WHERE personal_number = '198712270924'), 'SG1337'),
-    ('TP444', TRUE, 'Piano, guitar, flute, drums, violin', (SELECT id from personaldata WHERE personal_number = '196909138375'), 'SG1337');
+    ('TP444', FALSE, 'Piano, guitar, flute, drums, violin', (SELECT id from personaldata WHERE personal_number = '196909138375'), 'SG1337');
 
 -- Admin staff
 INSERT INTO administrative_staff (personaldata_id, soundgood_music_school_id)
@@ -68,16 +88,16 @@ INSERT INTO parent (personaldata_id)
 -- Absolutely terrible WIP but it works
 INSERT INTO student (instrument_quota, personaldata_id, parent_id)
   VALUES
-    (0, (SELECT id from personaldata WHERE personal_number = '201312095888'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197611275585'))),
+    (2, (SELECT id from personaldata WHERE personal_number = '201312095888'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197611275585'))),
     (0, (SELECT id from personaldata WHERE personal_number = '200911274021'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198004051237'))),
-    (1, (SELECT id from personaldata WHERE personal_number = '201103140039'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197307025221'))),
-    (2, (SELECT id from personaldata WHERE personal_number = '200902032436'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197307025221'))),
-    (0, (SELECT id from personaldata WHERE personal_number = '200210280297'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198110302166'))),
-    (1, (SELECT id from personaldata WHERE personal_number = '200711138821'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197002083146'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '201103140039'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197307025221'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200902032436'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197307025221'))),
+    (1, (SELECT id from personaldata WHERE personal_number = '200210280297'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198110302166'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200711138821'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197002083146'))),
     (0, (SELECT id from personaldata WHERE personal_number = '200004219987'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '197002083146'))),
-    (2, (SELECT id from personaldata WHERE personal_number = '200809160776'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '195906137713'))),
-    (1, (SELECT id from personaldata WHERE personal_number = '200605237981'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '195906137713'))),
-    (1, (SELECT id from personaldata WHERE personal_number = '200808190783'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198202229210')));
+    (1, (SELECT id from personaldata WHERE personal_number = '200809160776'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '195906137713'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200605237981'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '195906137713'))),
+    (0, (SELECT id from personaldata WHERE personal_number = '200808190783'), (SELECT id from parent WHERE personaldata_id = (SELECT id from personaldata WHERE personal_number = '198202229210')));
 
 
 
@@ -87,13 +107,45 @@ INSERT INTO student (instrument_quota, personaldata_id, parent_id)
 
 -- Instruments
 -- Add more information about instruments
-INSERT INTO rental_instrument_inventory (type_of_instrument, instrument_brand)
+INSERT INTO rental_instrument_inventory (type_of_instrument, instrument_brand, instrument_model_number, instrument_name, monthly_rental_price, rented)
   VALUES
-  	('Flute', 'Jupiter'),
-  	('Guitar', 'Les Paul'),
-  	('Bagpipe', 'Mctavish'),
-  	('Saxophone', 'Jupiter'),
-  	('Violin', 'Stradivarius');
+  	('Flute', 'Jupiter', 'JS1849349', 'Sonata', 50, FALSE),
+    ('Flute', 'Jupiter', 'JS9404592', 'Sonata', 50, FALSE),
+    ('Flute', 'Jupiter', 'JS1329310', 'Sonata', 50, TRUE),
+    ('Flute', 'Jupiter', 'JO5367742', 'Oiseaux', 55, FALSE),
+    ('Flute', 'Jupiter', 'JO3425537', 'Oiseaux', 55, FALSE),
+    ('Flute', 'Jupiter', 'JA4326736', 'Anna', 50, FALSE),
+    ('Flute', 'Jupiter', 'JA3423437', 'Anna', 50, FALSE),
+  	('Guitar', 'Les Paul', 'LS3910499', 'Stratocaster', 60, FALSE),
+    ('Guitar', 'Les Paul', 'LS3345529', 'Stratocaster', 60, TRUE),
+    ('Guitar', 'Les Paul', 'LS3040591', 'Stratocaster', 60, FALSE),
+    ('Guitar', 'Les Paul', 'LM3004194', 'Mjolnir', 60, FALSE),
+    ('Guitar', 'Les Paul', 'LM2019485', 'Mjolnir', 60, FALSE),
+    ('Guitar', 'Les Paul', 'LM3940194', 'Mjolnir', 60, FALSE),
+    ('Guitar', 'Les Paul', 'LF3919450', 'Fender', 66, FALSE),
+  	('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', 45, FALSE),
+    ('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', 45, FALSE),
+    ('Bagpipe', 'Mctavish', 'MH3950391', 'Haggis', 45, FALSE),
+    ('Bagpipe', 'Mctavish', 'MN3242343', 'Nessie', 45, FALSE),
+    ('Bagpipe', 'Mctavish', 'MN5677432', 'Nessie', 45, FALSE),
+    ('Bagpipe', 'Mctavish', 'MN4567234', 'Nessie', 45, FALSE),
+  	('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', 49, FALSE),
+    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', 49, FALSE),
+    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', 49, FALSE),
+    ('Saxophone', 'Jupiter', 'JW3819410', 'Whisper', 49, FALSE),
+    ('Saxophone', 'Jupiter', 'JE6582170', 'Epic', 69, TRUE),
+    ('Saxophone', 'Jupiter', 'JE0401051', 'Epic', 69, FALSE),
+    ('Saxophone', 'Jupiter', 'JE5582093', 'Epic', 69, FALSE),
+    ('Saxophone', 'Jupiter', 'JG9581884', 'Groovy', 69, FALSE),
+  	('Violin', 'Stradivarius', 'SI3918419', 'Inverno', 70, FALSE),
+    ('Violin', 'Stradivarius', 'SI1569427', 'Inverno', 70, FALSE),
+    ('Violin', 'Stradivarius', 'SP9475154', 'Primavera', 70, FALSE),
+    ('Violin', 'Stradivarius', 'SP4486817', 'Primavera', 70, TRUE),
+    ('Violin', 'Stradivarius', 'SE4874018', 'Estate', 75, FALSE),
+    ('Violin', 'Stradivarius', 'SE9571859', 'Estate', 75, FALSE),
+    ('Violin', 'Stradivarius', 'SA8578513', 'Autunno', 75, FALSE),
+    ('Violin', 'Stradivarius', 'SA3918419', 'Autunno', 75, FALSE);
+
 
 -- Pricing scheme
 INSERT INTO pricing_scheme (soundgood_music_school_id, price_of_group_lesson, price_of_individual_lesson, beginner_surcharge, intermediate_surcharge, advanced_surcharge)
@@ -237,10 +289,10 @@ INSERT INTO application_form (administrative_staff_id, type_of_instrument, level
 -- Lease contract
 INSERT INTO lease_contract (instrument_id, type_of_instrument, contract_start_date, contract_end_date, student_id)
   VALUES
-    (2, 'Guitar', '2021/09/01 13:00:00', '2022/06/01 13:00:00', 1),
-    (1, 'Flute', '2021/10/10 13:00:00', '2022/10/10 13:00:00', 3),
-    (5, 'Violin', '2021/09/22 13:00:00', '2022/05/22 13:00:00', 5),
-	  (4, 'Saxophone', '2021/08/30 13:00:00', '2022/05/30 13:00:00', 8);
+    (3, (SELECT type_of_instrument from rental_instrument_inventory WHERE id = 3), '2021/09/01 13:00:00', '2022/06/01 13:00:00', 1),
+    (9, (SELECT type_of_instrument from rental_instrument_inventory WHERE id = 9), '2021/10/10 13:00:00', '2022/10/10 13:00:00', 1),
+    (25, (SELECT type_of_instrument from rental_instrument_inventory WHERE id = 25), '2021/09/22 13:00:00', '2022/05/22 13:00:00', 5),
+	  (32, (SELECT type_of_instrument from rental_instrument_inventory WHERE id = 32), '2021/08/30 13:00:00', '2022/05/30 13:00:00', 8);
 
 -- Student payments
 INSERT INTO student_invoice (student_id, amount_of_individual_lessons, amount_of_group_lessons, amount_of_ensemble, instrument_fee, total_price, month)

@@ -110,16 +110,6 @@ CREATE TABLE pricing_scheme (
 ALTER TABLE pricing_scheme ADD CONSTRAINT PK_pricing_scheme PRIMARY KEY (soundgood_music_school_id);
 
 
-CREATE TABLE rental_instrument_inventory (
- id SERIAL NOT NULL,
- type_of_instrument VARCHAR(50),
- instrument_brand VARCHAR(500),
- soundgood_music_school_id VARCHAR(10) NOT NULL DEFAULT 'SG1337'
-);
-
-ALTER TABLE rental_instrument_inventory ADD CONSTRAINT PK_rental_instrument_inventory PRIMARY KEY (id);
-
-
 CREATE TABLE sibling_discount (
  soundgood_music_school_id VARCHAR(10) NOT NULL,
  discount_rate FLOAT(10)
@@ -204,6 +194,19 @@ CREATE TABLE individual_lesson (
 );
 
 ALTER TABLE individual_lesson ADD CONSTRAINT PK_individual_lesson PRIMARY KEY (music_lesson_id);
+
+CREATE TABLE rental_instrument_inventory (
+ id SERIAL NOT NULL,
+ type_of_instrument VARCHAR(50),
+ instrument_brand VARCHAR(500),
+ instrument_model_number VARCHAR(50),
+ instrument_name VARCHAR(500),
+ monthly_rental_price INT,
+ rented BOOLEAN DEFAULT FALSE, -- When creating new instruments they are avaliable for renting
+ soundgood_music_school_id VARCHAR(10) NOT NULL DEFAULT 'SG1337'
+);
+
+ALTER TABLE rental_instrument_inventory ADD CONSTRAINT PK_rental_instrument_inventory PRIMARY KEY (id);
 
 
 CREATE TABLE lease_contract (
