@@ -19,6 +19,7 @@ public class SoundgoodDBMS {
     private PreparedStatement terminateLeaseContractStmt;
     private PreparedStatement updateInstrumentStatusStmt;
     private PreparedStatement updateInstrumentQuotaStmt;
+    private PreparedStatement activeLeaseContractStmt;
         
     /**
      * 
@@ -57,6 +58,39 @@ public class SoundgoodDBMS {
         }
     }
     
+    /*
+     private void listAllContracts(Connection connection, int studenttermId){
+         try{ activeLeaseContractStmt.getString( studenttermId);
+            activeLeaseContractStmt.execute();
+             
+         } catch (SQLException sqle){
+              //connection.rollback();
+            sqle.printStackTrace();
+         }
+     }
+    */
+    
+    
+    private void listAllContracts(Connection connection, int studenttermId) {
+        try {activeLeaseContractStmt.setInt(1, studenttermId);
+                //createNewLeaseContractStmt.execute();
+            ResultSet contract = activeLeaseContractStmt.executeQuery();
+            while (contract.next()) {
+
+                System.out.println(
+                 "Instrument ID: " + contract.getInt(2) +
+                ", Start date: " + contract.getString(4) + 
+                ", End date: " + contract.getString(5) +
+                ", Type: " + contract.getString(3) + 
+                ", Student ID: " + contract.getString(6) +
+                ", Active: " + contract.getString(7));
+            }
+        } catch (SQLException sqle) {
+            //connection.rollback();
+            sqle.printStackTrace();
+        }
+    }
+    
     private void rentInstrument(Connection connection, int instrumentId, Timestamp startDate, Timestamp endDate, int studentId) throws SQLException {
         try {
             createNewLeaseContractStmt.setInt(1, instrumentId);
@@ -78,10 +112,18 @@ public class SoundgoodDBMS {
         }
     }
     
-    private void terminateRental(Connection connection, int terminateID) throws SQLException {
+    private void terminateRental(Connection connection, int instrumenttermId, int studenttermId) throws SQLException {
         try {
-            terminateLeaseContractStmt.setInt(1, terminateID);
+            terminateLeaseContractStmt.setBoolean(1, false);
+            terminateLeaseContractStmt.setInt(2, instrumenttermId);
             terminateLeaseContractStmt.execute();
+            updateInstrumentStatusStmt.setBoolean(1, false);
+            updateInstrumentStatusStmt.setInt(2, instrumenttermId);
+            updateInstrumentStatusStmt.execute();
+            updateInstrumentQuotaStmt.setInt(1, -1);
+            updateInstrumentQuotaStmt.setInt(2, studenttermId);
+            updateInstrumentQuotaStmt.execute();
+            
             connection.commit();
         } catch (SQLException sqle) {
             connection.rollback();
@@ -142,7 +184,9 @@ public class SoundgoodDBMS {
                 "UPDATE student SET instrument_quota = instrument_quota + ? WHERE id = ?");
         
         terminateLeaseContractStmt = connection.prepareStatement(
-                "SELECT * FROM rental_instrument_inventory");
+                "UPDATE lease_contract SET active = ? WHERE instrument_id = ?");
+        activeLeaseContractStmt = connection.prepareStatement(
+        "SELECT * FROM lease_contract WHERE student_id = ?");
     }
     
     /**
@@ -208,8 +252,12 @@ public class SoundgoodDBMS {
                         dbms.rentInstrument(DBconnection, instrumentId, startDate, endDate, studentId);
                         break;
                     case 3:
-                        System.out.println("Enter termination process here");
-                        //dbms.terminateRental();
+                        System.out.println("Enter your student ID: ");
+                        int studenttermId = scanner.nextInt();
+                        dbms.listAllContracts(DBconnection, studenttermId);
+                        System.out.println("Enter instrument ID");
+                        int instrumenttermId = scanner.nextInt();
+                        dbms.terminateRental(DBconnection, instrumenttermId, studenttermId);
                         break;
                     case 4:
                         System.out.println("\nExiting...");
