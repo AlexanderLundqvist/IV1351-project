@@ -276,9 +276,11 @@ public class SoundgoodDBMS {
                         try {
                             System.out.println("Enter your student ID: ");
                             int studentId = scanner.nextInt();
+                            /*
                             if (dbms.checkInstrumentQuota(DBconnection, studentId)) {
                                 break;
                             }
+                            */
                             
                             System.out.println("Enter enter the ID of the instrument you want to rent: ");
                             int instrumentId = scanner.nextInt();
