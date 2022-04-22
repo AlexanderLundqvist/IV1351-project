@@ -21,11 +21,8 @@ public class SoundgoodDBMS {
     private PreparedStatement terminateLeaseContractStmt;
     private PreparedStatement updateInstrumentStatusStmt;
     private PreparedStatement updateInstrumentQuotaStmt;
-<<<<<<< Updated upstream
     private PreparedStatement activeLeaseContractStmt;
-=======
     private PreparedStatement checkInstrumentQuotaStmt;
->>>>>>> Stashed changes
         
     /**
      * Creates a connection between the program and the database.
@@ -120,9 +117,6 @@ public class SoundgoodDBMS {
         }
     }
     
-<<<<<<< Updated upstream
-    private void terminateRental(Connection connection, int instrumenttermId, int studenttermId) throws SQLException {
-=======
     private void checkInstrumentQuota(Connection connection, int studentId) throws SQLException {
         try {
             checkInstrumentQuotaStmt.setInt(1, studentId);
@@ -134,17 +128,16 @@ public class SoundgoodDBMS {
         }
     }
     
-    private void terminateRental(Connection connection, int terminateID) throws SQLException {
->>>>>>> Stashed changes
+    private void terminateRental(Connection connection, int instrumentId, int studentId) throws SQLException {
         try {
             terminateLeaseContractStmt.setBoolean(1, false);
-            terminateLeaseContractStmt.setInt(2, instrumenttermId);
+            terminateLeaseContractStmt.setInt(2, instrumentId);
             terminateLeaseContractStmt.execute();
             updateInstrumentStatusStmt.setBoolean(1, false);
-            updateInstrumentStatusStmt.setInt(2, instrumenttermId);
+            updateInstrumentStatusStmt.setInt(2, instrumentId);
             updateInstrumentStatusStmt.execute();
             updateInstrumentQuotaStmt.setInt(1, -1);
-            updateInstrumentQuotaStmt.setInt(2, studenttermId);
+            updateInstrumentQuotaStmt.setInt(2, studentId);
             updateInstrumentQuotaStmt.execute();
             
             connection.commit();
