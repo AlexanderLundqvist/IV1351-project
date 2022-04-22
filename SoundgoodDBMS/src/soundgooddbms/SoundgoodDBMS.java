@@ -48,8 +48,11 @@ public class SoundgoodDBMS {
     /**
      * This method lists all the instruments that are available for rental.
      */
-    private void listAllInstruments() {
-        try (ResultSet instruments = listAllInstrumentsStmt.executeQuery()) {
+    private void listAllInstruments() throws SQLException {
+        String failMsg = "Could not find any instruments";
+        ResultSet instruments = null;
+        try {
+            instruments = listAllInstrumentsStmt.executeQuery();
             while (instruments.next()) {
               System.out.println(
                 "ID: " + instruments.getInt(1) +
@@ -62,15 +65,19 @@ public class SoundgoodDBMS {
         } catch (SQLException sqle) {
             //connection.rollback();
             sqle.printStackTrace();
+        } finally {
+            closeResultSet(failMsg, instruments);
         }
     }
        
     
-    private void listAllContracts(Connection connection, int studenttermId) {
+    private void listAllContracts(Connection connection, int studenttermId) throws SQLException {
+        String failMsg = "Could not find any contracts";
+        ResultSet contract = null;
         try {
             activeLeaseContractStmt.setInt(1, studenttermId);
             //activeLeaseContractStmt.execute();
-            ResultSet contract = activeLeaseContractStmt.executeQuery();
+            contract = activeLeaseContractStmt.executeQuery();
             while (contract.next()) {
 
                 System.out.println(
@@ -83,7 +90,10 @@ public class SoundgoodDBMS {
             }
         } catch (SQLException sqle) {
             //connection.rollback();
-            sqle.printStackTrace();
+            //sqle.printStackTrace();
+            handleException(failMsg, sqle);
+        } finally {
+            closeResultSet(failMsg, contract);
         }
     }
     
