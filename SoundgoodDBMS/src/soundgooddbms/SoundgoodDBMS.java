@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * This class is a basic assdfjsdfkjsfkjn
+ * This class is a basic program that lets the user manage instrument rentals at
+ * the music school Soundgood. It does not have any security at all so the user
+ * can manage the rentals however they like.
  * @author Alexander Lundqvist & Max Dern
  */
 public class SoundgoodDBMS {
@@ -19,10 +21,15 @@ public class SoundgoodDBMS {
     private PreparedStatement terminateLeaseContractStmt;
     private PreparedStatement updateInstrumentStatusStmt;
     private PreparedStatement updateInstrumentQuotaStmt;
+<<<<<<< Updated upstream
     private PreparedStatement activeLeaseContractStmt;
+=======
+    private PreparedStatement checkInstrumentQuotaStmt;
+>>>>>>> Stashed changes
         
     /**
-     * 
+     * Creates a connection between the program and the database.
+     * @return the established connection
      * @throws SQLException
      * @throws ClassNotFoundException 
      */
@@ -41,6 +48,9 @@ public class SoundgoodDBMS {
         return connection;
     }
     
+    /**
+     * This method lists all the instruments that are available for rental.
+     */
     private void listAllInstruments() {
         try (ResultSet instruments = listAllInstrumentsStmt.executeQuery()) {
             while (instruments.next()) {
@@ -80,8 +90,17 @@ public class SoundgoodDBMS {
         }
     }
     
+    /**
+     * Performs the instrument rental process.
+     * @param connection the database connection
+     * @param instrumentId the id of the instrument
+     * @param startDate the start date of the rental
+     * @param endDate the end date of the rental
+     * @param studentId the id of the student
+     * @throws SQLException 
+     */
     private void rentInstrument(Connection connection, int instrumentId, Timestamp startDate, Timestamp endDate, int studentId) throws SQLException {
-        try {
+        try (ResultSet instruments = checkInstrumentQuotaStmt.executeQuery()) {
             createNewLeaseContractStmt.setInt(1, instrumentId);
             createNewLeaseContractStmt.setInt(2, instrumentId);
             createNewLeaseContractStmt.setTimestamp(3, startDate);
@@ -101,7 +120,22 @@ public class SoundgoodDBMS {
         }
     }
     
+<<<<<<< Updated upstream
     private void terminateRental(Connection connection, int instrumenttermId, int studenttermId) throws SQLException {
+=======
+    private void checkInstrumentQuota(Connection connection, int studentId) throws SQLException {
+        try {
+            checkInstrumentQuotaStmt.setInt(1, studentId);
+            checkInstrumentQuotaStmt.execute();
+            connection.commit();
+        } catch (SQLException sqle) {
+            connection.rollback();
+            sqle.printStackTrace();
+        }
+    }
+    
+    private void terminateRental(Connection connection, int terminateID) throws SQLException {
+>>>>>>> Stashed changes
         try {
             terminateLeaseContractStmt.setBoolean(1, false);
             terminateLeaseContractStmt.setInt(2, instrumenttermId);
@@ -120,7 +154,10 @@ public class SoundgoodDBMS {
         }
     }
     
-    
+    /**
+     * 
+     * @throws SQLException 
+     */
     public void commit() throws SQLException {
         try {
             connection.commit();
@@ -129,8 +166,13 @@ public class SoundgoodDBMS {
         }
     }
 
-    
-     private void handleException(String failureMsg, Exception cause) throws SQLException {
+    /**
+     * 
+     * @param failureMsg
+     * @param cause
+     * @throws SQLException 
+     */
+    private void handleException(String failureMsg, Exception cause) throws SQLException {
         String completeFailureMsg = failureMsg;
         try {
             connection.rollback();
@@ -145,7 +187,13 @@ public class SoundgoodDBMS {
             throw new SQLException(failureMsg);
         }
     }
-
+    
+    /**
+     * 
+     * @param failureMsg
+     * @param result
+     * @throws SQLException 
+     */
     private void closeResultSet(String failureMsg, ResultSet result) throws SQLException {
         try {
             result.close();
@@ -153,9 +201,10 @@ public class SoundgoodDBMS {
             throw new SQLException(failureMsg + " Could not close result set.", e);
         }
     }
+    
     /**
-     * 
-     * @param connection
+     * Creates prepared statements to be executed in the database.
+     * @param connection the database connection
      * @throws SQLException 
      */
     private void prepareStatements(Connection connection) throws SQLException {
@@ -171,6 +220,9 @@ public class SoundgoodDBMS {
         
         updateInstrumentQuotaStmt = connection.prepareStatement(
                 "UPDATE student SET instrument_quota = instrument_quota + ? WHERE id = ?");
+        
+        checkInstrumentQuotaStmt = connection.prepareStatement(
+                "SELECT * FROM student WHERE id = ?");
         
         terminateLeaseContractStmt = connection.prepareStatement(
                 "UPDATE lease_contract SET active = ? WHERE instrument_id = ?");
@@ -194,6 +246,11 @@ public class SoundgoodDBMS {
        System.out.println("*****************************************************************************");
     }
     
+    /**
+     * Formats a string on the format <dd/MM/yyy> and returns it as a Timestamp object.
+     * @param string the string to be formatted
+     * @return a valid timestamp
+     */
     public static Timestamp stringToTimestamp(String string) {
         String dateTime = string.trim() + " 13:00:00";
         DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
@@ -203,7 +260,7 @@ public class SoundgoodDBMS {
     }
     
     /**
-     * 
+     * Main program process. Controls the flow of the program.
      * @param args takes no CLI commands.
      */
     public static void main(String[] args) {
@@ -223,22 +280,28 @@ public class SoundgoodDBMS {
                         dbms.listAllInstruments();
                         break;
                     case 2:
-                        // Needs check here
-                        System.out.println("Enter your student ID: ");
-                        int studentId = scanner.nextInt();
-                        
-                        System.out.println("Enter enter the ID of the instrument you want to rent: ");
-                        int instrumentId = scanner.nextInt();
-                        
-                        System.out.println("Enter enter start date of rental <dd/mm/yyyy>: ");
-                        String start = scanner.next();
-                        Timestamp startDate = stringToTimestamp(start);
-                        
-                        System.out.println("Enter enter end date of rental <dd/mm/yyyy>: ");
-                        String end = scanner.next();
-                        Timestamp endDate = stringToTimestamp(end);
-                        
-                        dbms.rentInstrument(DBconnection, instrumentId, startDate, endDate, studentId);
+                        try {
+                            System.out.println("Enter your student ID: ");
+                            int studentId = scanner.nextInt();
+                            if (dbms.checkInstrumentQuota(DBconnection, studentId)) {
+                                break;
+                            }
+                            
+                            System.out.println("Enter enter the ID of the instrument you want to rent: ");
+                            int instrumentId = scanner.nextInt();
+
+                            System.out.println("Enter enter start date of rental <dd/mm/yyyy>: ");
+                            String start = scanner.next();
+                            Timestamp startDate = stringToTimestamp(start);
+
+                            System.out.println("Enter enter end date of rental <dd/mm/yyyy>: ");
+                            String end = scanner.next();
+                            Timestamp endDate = stringToTimestamp(end);
+
+                            dbms.rentInstrument(DBconnection, instrumentId, startDate, endDate, studentId);
+                        } catch (Exception ex) {
+                            System.out.println("Error with input: " + ex);
+                        }
                         break;
                     case 3:
                         System.out.println("Enter your student ID: ");
