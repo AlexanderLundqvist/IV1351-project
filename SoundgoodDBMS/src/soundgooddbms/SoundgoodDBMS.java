@@ -23,6 +23,7 @@ public class SoundgoodDBMS {
     private PreparedStatement updateInstrumentQuotaStmt;
     private PreparedStatement activeLeaseContractStmt;
     private PreparedStatement checkInstrumentQuotaStmt;
+    private PreparedStatement checkInstrumentAvailabilityStmt;
         
     /**
      * Creates a connection between the program and the database.
@@ -308,6 +309,8 @@ public class SoundgoodDBMS {
                             
                             System.out.println("Enter enter the ID of the instrument you want to rent: ");
                             int instrumentId = scanner.nextInt();
+                            
+                            // Check if instrument is avalable or not
 
                             System.out.println("Enter enter start date of rental <dd/mm/yyyy>: ");
                             String start = scanner.next();
@@ -327,6 +330,8 @@ public class SoundgoodDBMS {
                         int studenttermId = scanner.nextInt();
                         dbms.listAllContracts(DBconnection, studenttermId);
                         System.out.println("Enter instrument ID");
+                        // Pass in contract id instead of instrument id
+                        //
                         int instrumenttermId = scanner.nextInt();
                         dbms.terminateRental(DBconnection, instrumenttermId, studenttermId);
                         break;
