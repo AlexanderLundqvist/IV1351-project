@@ -127,15 +127,29 @@ public class SoundgoodDBMS {
         }
     }
     
-    private void checkInstrumentQuota(Connection connection, int studentId) throws SQLException {
+    /**
+     * This function checks if a student has reached their instrument quota.
+     * @param connection the connection
+     * @param studentId the student id
+     * @return boolean false if instrument quota is not full, true if it is
+     * @throws SQLException 
+     */
+    private boolean checkInstrumentQuota(Connection connection, int studentId) throws SQLException {
+        boolean quotaExceded = false;
         try {
             checkInstrumentQuotaStmt.setInt(1, studentId);
-            checkInstrumentQuotaStmt.execute();
+            ResultSet result = checkInstrumentQuotaStmt.executeQuery();
+            result.next();
+            if (result.getInt(1) == 2) {
+                quotaExceded = true;
+            }
             connection.commit();
+            return quotaExceded;
         } catch (SQLException sqle) {
             connection.rollback();
             sqle.printStackTrace();
         }
+        return quotaExceded;
     }
     
     private void terminateRental(Connection connection, int instrumentId, int studentId) throws SQLException {
@@ -149,7 +163,6 @@ public class SoundgoodDBMS {
             updateInstrumentQuotaStmt.setInt(1, -1);
             updateInstrumentQuotaStmt.setInt(2, studentId);
             updateInstrumentQuotaStmt.execute();
-            
             connection.commit();
         } catch (SQLException sqle) {
             connection.rollback();
@@ -225,12 +238,13 @@ public class SoundgoodDBMS {
                 "UPDATE student SET instrument_quota = instrument_quota + ? WHERE id = ?");
         
         checkInstrumentQuotaStmt = connection.prepareStatement(
-                "SELECT * FROM student WHERE id = ?");
+                "SELECT instrument_quota FROM student WHERE id = ?");
         
         terminateLeaseContractStmt = connection.prepareStatement(
                 "UPDATE lease_contract SET active = ? WHERE instrument_id = ?");
+        
         activeLeaseContractStmt = connection.prepareStatement(
-        "SELECT * FROM lease_contract WHERE student_id = ? AND active = TRUE");
+                "SELECT * FROM lease_contract WHERE student_id = ? AND active = TRUE");
     }
     
     /**
@@ -286,11 +300,11 @@ public class SoundgoodDBMS {
                         try {
                             System.out.println("Enter your student ID: ");
                             int studentId = scanner.nextInt();
-                            /*
+                            
                             if (dbms.checkInstrumentQuota(DBconnection, studentId)) {
+                                System.out.println("You have already reached your instrument quota!");
                                 break;
                             }
-                            */
                             
                             System.out.println("Enter enter the ID of the instrument you want to rent: ");
                             int instrumentId = scanner.nextInt();
