@@ -24,6 +24,7 @@ public class SoundgoodDBMS {
     private PreparedStatement activeLeaseContractStmt;
     private PreparedStatement checkInstrumentQuotaStmt;
     private PreparedStatement checkInstrumentAvailabilityStmt;
+    private PreparedStatement checkInstrumentRelationStmt;
         
     /**
      * Creates a connection between the program and the database.
@@ -71,7 +72,12 @@ public class SoundgoodDBMS {
         }
     }
        
-    
+    /**
+     * 
+     * @param connection
+     * @param studenttermId
+     * @throws SQLException 
+     */
     private void listAllContracts(Connection connection, int studenttermId) throws SQLException {
         String failMsg = "Could not find any contracts";
         ResultSet contract = null;
@@ -80,7 +86,7 @@ public class SoundgoodDBMS {
             //activeLeaseContractStmt.execute();
             contract = activeLeaseContractStmt.executeQuery();
             while (contract.next()) {
-
+                
                 System.out.println(
                  "Instrument ID: " + contract.getInt(2) +
                 ", Start date: " + contract.getString(4) + 
@@ -153,6 +159,64 @@ public class SoundgoodDBMS {
         return quotaExceded;
     }
     
+    /**
+     * 
+     * @param connection
+     * @param instrumentId
+     * @return
+     * @throws SQLException 
+     */
+    private boolean checkInstrumentAvailability(Connection connection, int instrumentId) throws SQLException {
+        boolean rented = false;
+        try {
+            checkInstrumentAvailabilityStmt.setInt(1, instrumentId);
+            ResultSet result = checkInstrumentAvailabilityStmt.executeQuery();
+            result.next();
+            if (result.getBoolean(1) == true) {
+                rented = true;
+            }
+            connection.commit();
+            return rented;
+        } catch (SQLException sqle) {
+            connection.rollback();
+            sqle.printStackTrace();
+        }
+        return rented;
+    }
+    
+    /**
+     * 
+     * @param connection
+     * @param instrumentId
+     * @param studentId
+     * @return
+     * @throws SQLException 
+     */
+    private boolean checkInstrumentRelation(Connection connection, int instrumentId, int studentId) throws SQLException {
+        boolean exists = true;
+        try {
+            checkInstrumentRelationStmt.setInt(1, studentId);
+            checkInstrumentRelationStmt.setInt(2, instrumentId);
+            ResultSet result = checkInstrumentRelationStmt.executeQuery();
+            if (result.next() == false) {
+                exists = false;
+            }
+            connection.commit();
+            return exists;
+        } catch (SQLException sqle) {
+            connection.rollback();
+            sqle.printStackTrace();
+        }
+        return exists;
+    }
+    
+    /**
+     * 
+     * @param connection
+     * @param instrumentId
+     * @param studentId
+     * @throws SQLException 
+     */
     private void terminateRental(Connection connection, int instrumentId, int studentId) throws SQLException {
         try {
             terminateLeaseContractStmt.setBoolean(1, false);
@@ -241,6 +305,12 @@ public class SoundgoodDBMS {
         checkInstrumentQuotaStmt = connection.prepareStatement(
                 "SELECT instrument_quota FROM student WHERE id = ?");
         
+        checkInstrumentAvailabilityStmt = connection.prepareStatement(
+                "SELECT rented FROM rental_instrument_inventory WHERE id = ?");
+        
+        checkInstrumentRelationStmt = connection.prepareStatement(
+                "SELECT * FROM lease_contract WHERE student_id = ? AND instrument_id = ? AND active = TRUE");
+        
         terminateLeaseContractStmt = connection.prepareStatement(
                 "UPDATE lease_contract SET active = ? WHERE instrument_id = ?");
         
@@ -270,7 +340,7 @@ public class SoundgoodDBMS {
      * @return a valid timestamp
      */
     public static Timestamp stringToTimestamp(String string) {
-        String dateTime = string.trim() + " 13:00:00";
+        String dateTime = string.trim() + " 13:00:00"; // This is because how our database schema is built.
         DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime localDateTime = LocalDateTime.from(formatDateTime.parse(dateTime));
         Timestamp timestamp = Timestamp.valueOf(localDateTime);
@@ -310,7 +380,10 @@ public class SoundgoodDBMS {
                             System.out.println("Enter enter the ID of the instrument you want to rent: ");
                             int instrumentId = scanner.nextInt();
                             
-                            // Check if instrument is avalable or not
+                            if (dbms.checkInstrumentAvailability(DBconnection, instrumentId)) {
+                                System.out.println("That instrument is not available!");
+                                break;
+                            }
 
                             System.out.println("Enter enter start date of rental <dd/mm/yyyy>: ");
                             String start = scanner.next();
@@ -326,14 +399,23 @@ public class SoundgoodDBMS {
                         }
                         break;
                     case 3:
-                        System.out.println("Enter your student ID: ");
-                        int studenttermId = scanner.nextInt();
-                        dbms.listAllContracts(DBconnection, studenttermId);
-                        System.out.println("Enter instrument ID");
-                        // Pass in contract id instead of instrument id
-                        //
-                        int instrumenttermId = scanner.nextInt();
-                        dbms.terminateRental(DBconnection, instrumenttermId, studenttermId);
+                        try {
+                            System.out.println("Enter your student ID: ");
+                            int studenttermId = scanner.nextInt();
+                            dbms.listAllContracts(DBconnection, studenttermId);
+                            
+                            System.out.println("Enter instrument ID");
+                            int instrumenttermId = scanner.nextInt();
+                            if (dbms.checkInstrumentRelation(DBconnection, instrumenttermId, studenttermId) == false) {
+                                System.out.println("That is not one of your instruments!");
+                                break;
+                            } 
+                            else {
+                                dbms.terminateRental(DBconnection, instrumenttermId, studenttermId);
+                            }
+                        } catch (Exception ex) {
+                            System.out.println("Error: " + ex);
+                        } 
                         break;
                     case 4:
                         System.out.println("\nExiting...");
