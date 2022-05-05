@@ -14,7 +14,7 @@ public class SoundgoodDBMS {
     private String database = "soundgood";
     private String user     = "postgres";
     private String password = "postgres";
-    private Connection connection;
+    //private Connection connection;
     
     private PreparedStatement listAllInstrumentsStmt;
     private PreparedStatement createNewLeaseContractStmt;
@@ -49,8 +49,10 @@ public class SoundgoodDBMS {
     
     /**
      * This method lists all the instruments that are available for rental.
+     * @param connection the connection
+     * @throws SQLException 
      */
-    private void listAllInstruments() throws SQLException {
+    private void listAllInstruments(Connection connection) throws SQLException {
         String failMsg = "Could not find any instruments";
         ResultSet instruments = null;
         try {
@@ -64,18 +66,18 @@ public class SoundgoodDBMS {
                 ", Brand: " + instruments.getString(3) +
                 ", Price: " + instruments.getInt(6));
             }
+            connection.commit();
         } catch (SQLException sqle) {
-            //connection.rollback();
-            sqle.printStackTrace();
+            handleException(connection, failMsg, sqle);
         } finally {
             closeResultSet(failMsg, instruments);
         }
     }
        
     /**
-     * 
-     * @param connection
-     * @param studenttermId
+     * Lists all the active contracts of a student.
+     * @param connection the connection
+     * @param studenttermId the student ID
      * @throws SQLException 
      */
     private void listAllContracts(Connection connection, int studenttermId) throws SQLException {
@@ -83,22 +85,19 @@ public class SoundgoodDBMS {
         ResultSet contract = null;
         try {
             activeLeaseContractStmt.setInt(1, studenttermId);
-            //activeLeaseContractStmt.execute();
             contract = activeLeaseContractStmt.executeQuery();
             while (contract.next()) {
                 
                 System.out.println(
-                 "Instrument ID: " + contract.getInt(2) +
+                "Instrument ID: " + contract.getInt(2) +
                 ", Start date: " + contract.getString(4) + 
                 ", End date: " + contract.getString(5) +
                 ", Type: " + contract.getString(3) + 
                 ", Student ID: " + contract.getString(6));
-                //", Active: " + contract.getString(7));
             }
+            connection.commit();
         } catch (SQLException sqle) {
-            //connection.rollback();
-            //sqle.printStackTrace();
-            handleException(failMsg, sqle);
+            handleException(connection, failMsg, sqle);
         } finally {
             closeResultSet(failMsg, contract);
         }
@@ -114,7 +113,8 @@ public class SoundgoodDBMS {
      * @throws SQLException 
      */
     private void rentInstrument(Connection connection, int instrumentId, Timestamp startDate, Timestamp endDate, int studentId) throws SQLException {
-        try (ResultSet instruments = checkInstrumentQuotaStmt.executeQuery()) {
+        String failMsg = "Could not rent the instrument";
+        try {
             createNewLeaseContractStmt.setInt(1, instrumentId);
             createNewLeaseContractStmt.setInt(2, instrumentId);
             createNewLeaseContractStmt.setTimestamp(3, startDate);
@@ -129,8 +129,7 @@ public class SoundgoodDBMS {
             updateInstrumentQuotaStmt.execute();
             connection.commit();
         } catch (SQLException sqle) {
-            connection.rollback();
-            sqle.printStackTrace();
+            handleException(connection, failMsg, sqle);
         }
     }
     
@@ -142,6 +141,7 @@ public class SoundgoodDBMS {
      * @throws SQLException 
      */
     private boolean checkInstrumentQuota(Connection connection, int studentId) throws SQLException {
+        String failMsg = "Could not retrieve instruments";
         boolean quotaExceded = false;
         try {
             checkInstrumentQuotaStmt.setInt(1, studentId);
@@ -153,20 +153,20 @@ public class SoundgoodDBMS {
             connection.commit();
             return quotaExceded;
         } catch (SQLException sqle) {
-            connection.rollback();
-            sqle.printStackTrace();
+            handleException(connection, failMsg, sqle);
         }
         return quotaExceded;
     }
     
     /**
-     * 
-     * @param connection
-     * @param instrumentId
-     * @return
+     * Checks if an instrument is available for renting.
+     * @param connection the connection
+     * @param instrumentId the instrument ID
+     * @return true if the instrument is rented, false is it is available
      * @throws SQLException 
      */
     private boolean checkInstrumentAvailability(Connection connection, int instrumentId) throws SQLException {
+        String failMsg = "Could not retrieve instrument availability";
         boolean rented = false;
         try {
             checkInstrumentAvailabilityStmt.setInt(1, instrumentId);
@@ -178,21 +178,21 @@ public class SoundgoodDBMS {
             connection.commit();
             return rented;
         } catch (SQLException sqle) {
-            connection.rollback();
-            sqle.printStackTrace();
+            handleException(connection, failMsg, sqle);
         }
         return rented;
     }
     
     /**
-     * 
-     * @param connection
-     * @param instrumentId
-     * @param studentId
-     * @return
+     * Checks if an instrument is connected to a particular student.
+     * @param connection the connection
+     * @param instrumentId the instrument ID
+     * @param studentId the student ID
+     * @return true if there is a relation between student and instrument, false if not.
      * @throws SQLException 
      */
     private boolean checkInstrumentRelation(Connection connection, int instrumentId, int studentId) throws SQLException {
+        String failMsg = "Could not retrieve contract status";
         boolean exists = true;
         try {
             checkInstrumentRelationStmt.setInt(1, studentId);
@@ -204,20 +204,21 @@ public class SoundgoodDBMS {
             connection.commit();
             return exists;
         } catch (SQLException sqle) {
-            connection.rollback();
-            sqle.printStackTrace();
+            handleException(connection, failMsg, sqle);
         }
         return exists;
     }
     
     /**
-     * 
-     * @param connection
-     * @param instrumentId
-     * @param studentId
+     * Terminates an ongoing rental. Sets contract to inactive, corrects the student
+     * quota and makes the instrument available for leasing once again.
+     * @param connection the connection
+     * @param instrumentId the instrument ID
+     * @param studentId the student ID
      * @throws SQLException 
      */
     private void terminateRental(Connection connection, int instrumentId, int studentId) throws SQLException {
+        String failMsg = "Could not terminate rental";
         try {
             terminateLeaseContractStmt.setBoolean(1, false);
             terminateLeaseContractStmt.setInt(2, instrumentId);
@@ -230,30 +231,19 @@ public class SoundgoodDBMS {
             updateInstrumentQuotaStmt.execute();
             connection.commit();
         } catch (SQLException sqle) {
-            connection.rollback();
-            sqle.printStackTrace();
-        }
-    }
-    
-    /**
-     * 
-     * @throws SQLException 
-     */
-    public void commit() throws SQLException {
-        try {
-            connection.commit();
-        } catch (SQLException e) {
-            handleException("Failed to commit", e);
+            handleException(connection, failMsg, sqle);
         }
     }
 
     /**
-     * 
-     * @param failureMsg
-     * @param cause
+     * Handles exceptions regarding transactions. Performs rollbacks if error 
+     * has happened in the transaction.
+     * @param connection the database connection
+     * @param failureMsg the failure message
+     * @param cause cause of the exception
      * @throws SQLException 
      */
-    private void handleException(String failureMsg, Exception cause) throws SQLException {
+    private void handleException(Connection connection, String failureMsg, Exception cause) throws SQLException {
         String completeFailureMsg = failureMsg;
         try {
             connection.rollback();
@@ -270,9 +260,9 @@ public class SoundgoodDBMS {
     }
     
     /**
-     * 
-     * @param failureMsg
-     * @param result
+     * Tries to close the resultset in case of transaction error.
+     * @param failureMsg the failure message
+     * @param result the resultset
      * @throws SQLException 
      */
     private void closeResultSet(String failureMsg, ResultSet result) throws SQLException {
@@ -365,7 +355,7 @@ public class SoundgoodDBMS {
                 switch (choice) {
                     case 1:
                         System.out.println("Listing instruments");
-                        dbms.listAllInstruments();
+                        dbms.listAllInstruments(DBconnection);
                         break;
                     case 2:
                         try {
