@@ -142,10 +142,11 @@ public class SoundgoodDBMS {
      */
     private boolean checkInstrumentQuota(Connection connection, int studentId) throws SQLException {
         String failMsg = "Could not retrieve instruments";
+        ResultSet result = null;
         boolean quotaExceded = false;
         try {
             checkInstrumentQuotaStmt.setInt(1, studentId);
-            ResultSet result = checkInstrumentQuotaStmt.executeQuery();
+            result = checkInstrumentQuotaStmt.executeQuery();
             result.next();
             if (result.getInt(1) == 2) {
                 quotaExceded = true;
@@ -154,6 +155,8 @@ public class SoundgoodDBMS {
             return quotaExceded;
         } catch (SQLException sqle) {
             handleException(connection, failMsg, sqle);
+        } finally {
+            closeResultSet(failMsg, result);
         }
         return quotaExceded;
     }
@@ -167,10 +170,11 @@ public class SoundgoodDBMS {
      */
     private boolean checkInstrumentAvailability(Connection connection, int instrumentId) throws SQLException {
         String failMsg = "Could not retrieve instrument availability";
+        ResultSet result = null;
         boolean rented = false;
         try {
             checkInstrumentAvailabilityStmt.setInt(1, instrumentId);
-            ResultSet result = checkInstrumentAvailabilityStmt.executeQuery();
+            result = checkInstrumentAvailabilityStmt.executeQuery();
             result.next();
             if (result.getBoolean(1) == true) {
                 rented = true;
@@ -179,6 +183,8 @@ public class SoundgoodDBMS {
             return rented;
         } catch (SQLException sqle) {
             handleException(connection, failMsg, sqle);
+        } finally {
+            closeResultSet(failMsg, result);
         }
         return rented;
     }
@@ -193,11 +199,12 @@ public class SoundgoodDBMS {
      */
     private boolean checkInstrumentRelation(Connection connection, int instrumentId, int studentId) throws SQLException {
         String failMsg = "Could not retrieve contract status";
+        ResultSet result = null;
         boolean exists = true;
         try {
             checkInstrumentRelationStmt.setInt(1, studentId);
             checkInstrumentRelationStmt.setInt(2, instrumentId);
-            ResultSet result = checkInstrumentRelationStmt.executeQuery();
+            result = checkInstrumentRelationStmt.executeQuery();
             if (result.next() == false) {
                 exists = false;
             }
@@ -205,6 +212,8 @@ public class SoundgoodDBMS {
             return exists;
         } catch (SQLException sqle) {
             handleException(connection, failMsg, sqle);
+        } finally {
+            closeResultSet(failMsg, result);
         }
         return exists;
     }
